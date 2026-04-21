@@ -1,0 +1,60 @@
+Persistencia Apuntes
+
+-API JDBC (no es lo mimso que una API Web)
+
+-DAO --> Data Access Object
+
+-ORM --> Mapatge Objecte-Relacional. Permet pasar dades de taules de BD relacionals a un objectes.
+
+SGBD --> Sistema gestió base de dades
+
+1. Que es JDBC?
+-API accés a dades
+-Permet connectar-se SGBD (Workbench) o Fitxers (JSON, CS, XML)
+-Funcions
+	·Connexió BDD
+	·Executem SQL
+	·Tractem dades (processar dades)
+
+2. Persistència de dades
+-Objectiu: emmagatzemar, recuprerar, actualitzar, eliminar (Create Read Update Delete)
+-Guardar dades de forma permanent
+-Capa persistència (on es treballen les dades)
+
+3. Mapatge Objecte-Relacional (ORM)
+-Convertir Dades --> Objectes --> Dades
+-API treballa amb ORM
+
+4. JDBC com a capa d'abstració
+-Compatible amb tecnologies SGBD
+-Codi independent del SGBD
+-Adaptació codi SQL segons SGBD (cada SGBD te les sebes pròpies sentencies)
+
+5. Arquitectura JDBC
+-Interfaces
+	·Connection
+	·ResultSet
+	·Prepared
+	·Prepared Statement
+	·Callable Statement (Procedure)
+
+-Drivers (.jar)
+	·Implementació del fabricant
+	·Llibreries jar
+
+-Capes
+	·V (Vista / GUI Layer)
+	·C (Controlador / Bussiness Layer
+	·M (Data Layer)
+
+6. DAO (Data Access Object)
+
+6.1 Funcions
+-Separa l'accés a dades de la resta del programa / de la lògica del negoci
+-Implementa el CRUD
+-Mapeja dades
+
+6.2 Avantatges
+-Independència de la font de dades (SGBD) --> Permet canviar la BDD
+-Manteniment més fàcil --> Reutilització de codi
+
