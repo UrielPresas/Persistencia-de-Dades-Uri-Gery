@@ -1,4 +1,6 @@
 package DAO;
 
-public class escaladorDAO {
+import Model.Escalador;
+
+public interface EscaladorDAO extends DAO<Escalador, Long>{
 }

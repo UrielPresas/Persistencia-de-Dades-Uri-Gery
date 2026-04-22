@@ -4,13 +4,7 @@ import Model.Escalador;
 
 import java.util.List;
 
-public class MySQLescaladorDAO implements EscaladorDAO{
-   //private Connection conn;
-
-    /*public MySQLescaladorDAO(Connection conn){
-        this.conn = conn;
-    }*/
-
+public class MySQLEscolaDAO implements EscaladorDAO{
     @Override
     public void inserir(Escalador c) {
 
