@@ -1,32 +1,36 @@
-package DAO;
+package DAO.MySQL;
 
-import Model.Escalador;
+
+
+import DAO.EscolaDAO;
+import Model.Escola;
 
 import java.util.List;
 
-public class MySQLEscolaDAO implements EscaladorDAO{
+public class MySQLEscolaDAO implements EscolaDAO {
+
     @Override
-    public void inserir(Escalador c) {
+    public void inserir(Escola c) {
 
     }
 
     @Override
-    public void modificar(Escalador c) {
+    public void modificar(Escola c) {
 
     }
 
     @Override
-    public void eliminar(Escalador c) {
+    public void eliminar(Escola c) {
 
     }
 
     @Override
-    public List<Escalador> obtindreTots() {
+    public List<Escola> obtindreTots() {
         return List.of();
     }
 
     @Override
-    public Escalador obtenir(Long id) {
+    public Escola obtenir(Long id) {
         return null;
     }
 }

@@ -1,4 +1,6 @@
 package DAO;
 
-public class SectorDAO {
+import Model.Sector;
+
+public interface SectorDAO extends DAO<Sector, Long> {
 }

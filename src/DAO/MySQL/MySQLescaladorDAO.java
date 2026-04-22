@@ -1,10 +1,11 @@
-package DAO;
+package DAO.MySQL;
 
+import DAO.EscaladorDAO;
 import Model.Escalador;
 
 import java.util.List;
 
-public class MySQLescaladorDAO implements EscaladorDAO{
+public class MySQLescaladorDAO implements EscaladorDAO {
    //private Connection conn;
 
     /*public MySQLescaladorDAO(Connection conn){

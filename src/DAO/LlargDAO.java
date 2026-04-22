@@ -1,4 +1,6 @@
 package DAO;
 
-public class LlargDAO {
+import Model.Llarg;
+
+public interface LlargDAO extends DAO<Llarg, Long>{
 }
