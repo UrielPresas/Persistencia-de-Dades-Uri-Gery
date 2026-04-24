@@ -1,4 +1,5 @@
 package DAO;
 
-public class Connexio {
+public interface Connexio {
+    //Connection getConnection()
 }

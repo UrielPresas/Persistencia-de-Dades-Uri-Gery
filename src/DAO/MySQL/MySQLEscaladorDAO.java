@@ -5,7 +5,7 @@ import Model.Escalador;
 
 import java.util.List;
 
-public class MySQLescaladorDAO implements EscaladorDAO {
+public class MySQLEscaladorDAO implements EscaladorDAO {
    //private Connection conn;
 
     /*public MySQLescaladorDAO(Connection conn){

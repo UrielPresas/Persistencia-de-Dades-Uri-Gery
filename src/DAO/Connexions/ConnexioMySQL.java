@@ -5,6 +5,8 @@ import java.sql.*;
 public class ConnexioMySQL {
 
     public static void main(String[] args) {
+        //Hacer un archivo de configuracion con los datos de las base de datos
+        //Inputstream para leer el archivo con credenciales, con Properties
         String url = "jdbc:mysql://127.0.0.1:3306/Pillam";
         String user = "root";
         String pass = "Blanes2007!";
