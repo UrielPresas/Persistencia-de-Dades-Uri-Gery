@@ -1,5 +1,10 @@
 package Vista;
+import DAO.MySQL.MySQLViaDAO;
+import DAO.ViaDAO;
+import Model.Via;
+
 import java.sql.Connection;
+import java.util.List;
 import java.util.Scanner;
 
 public class Vista {
@@ -217,7 +222,12 @@ public class Vista {
                     llistarUnaVia();
                     break;
                 case 2:
-                    System.out.println("Llistant totes les vies...");
+                    ViaDAO viaDAO = new MySQLViaDAO();
+                    List<Via> vies = viaDAO.obtindreTots();
+                    System.out.println("id_via | sector_id | creador_id | nom | tipus_via | orientacio | estat | data_fi_estat | ancoratge | tipus_roca | grau | restriccions");
+                    for(Via v : vies){
+                        System.out.println(v);
+                    }
                     break;
                 case 0:
                     break;

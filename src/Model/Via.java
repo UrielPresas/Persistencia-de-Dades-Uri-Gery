@@ -111,4 +111,21 @@ public class Via {
     public void setRestriccions(boolean restriccions) {
         this.restriccions = restriccions;
     }
+
+    @Override
+    public String toString() {
+        return
+                id_via + "\t\t" +
+                sector_id + "\t\t" +
+                creador_id + "\t\t" +
+                nom + "\t\t" +
+                tipus_via + "\t\t" +
+                orientacio + "\t\t" +
+                estat + "\t\t" +
+                data_fi_estat + "\t\t" +
+                ancoratge + "\t\t" +
+                tipus_roca + "\t\t" +
+                grau + "\t\t" +
+                restriccions;
+    }
 }
