@@ -73,4 +73,17 @@ public class Sector {
     public void setEscola_id(long escola_id) {
         this.escola_id = escola_id;
     }
+
+    @Override
+    public String toString() {
+        return
+                id_sector + "\t\t" +
+                nom + "\t\t" +
+                coordenades + "\t\t" +
+                aproximacio + "\t\t" +
+                numero_vies + "\t\t" +
+                popularitat + "\t\t" +
+                restriccions + "\t\t" +
+                escola_id;
+    }
 }
