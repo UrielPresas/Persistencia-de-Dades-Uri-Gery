@@ -5,7 +5,7 @@ public class Escalador {
     private String nom;
     private String alias;
     private int edat;
-    private String nivel_maxim;
+    private String nivell_maxim;
     private String estil_preferit;
 
     public long getId_escalador() {
@@ -24,8 +24,8 @@ public class Escalador {
         return edat;
     }
 
-    public String getNivel_maxim() {
-        return nivel_maxim;
+    public String getNivell_maxim() {
+        return nivell_maxim;
     }
 
     public String getEstil_preferit() {
@@ -48,11 +48,22 @@ public class Escalador {
         this.edat = edat;
     }
 
-    public void setNivel_maxim(String nivel_maxim) {
-        this.nivel_maxim = nivel_maxim;
+    public void setNivell_maxim(String nivell_maxim) {
+        this.nivell_maxim = nivell_maxim;
     }
 
     public void setEstil_preferit(String estil_preferit) {
         this.estil_preferit = estil_preferit;
+    }
+
+    @Override
+    public String toString() {
+        return
+                id_escalador + "\t\t" +
+                nom + "\t\t" +
+                alias + "\t\t" +
+                edat + "\t\t" +
+                nivell_maxim + "\t\t" +
+                estil_preferit;
     }
 }

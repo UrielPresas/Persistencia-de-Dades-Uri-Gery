@@ -53,6 +53,7 @@ public class MySQLViaDAO implements ViaDAO {
                 v.setTipus_roca(rs.getString("tipus_roca"));
                 v.setGrau(rs.getString("grau"));
                 v.setRestriccions(rs.getBoolean("restriccions"));
+
                 vies.add(v);
             }
 
@@ -67,6 +68,6 @@ public class MySQLViaDAO implements ViaDAO {
     public Via obtenir(Long id) {
         return null;
     }
-    
+
 
 }

@@ -1,8 +1,14 @@
 package Vista;
+import DAO.EscaladorDAO;
+import DAO.EscolaDAO;
+import DAO.MySQL.MySQLEscaladorDAO;
+import DAO.MySQL.MySQLEscolaDAO;
 import DAO.MySQL.MySQLSectorDAO;
 import DAO.MySQL.MySQLViaDAO;
 import DAO.SectorDAO;
 import DAO.ViaDAO;
+import Model.Escalador;
+import Model.Escola;
 import Model.Sector;
 import Model.Via;
 
@@ -225,6 +231,7 @@ public class Vista {
                     llistarUnaVia();
                     break;
                 case 2:
+                    System.out.println("Llistant totes les vies...");
                     ViaDAO viaDAO = new MySQLViaDAO();
                     List<Via> vies = viaDAO.obtindreTots();
                     System.out.println("id_via | sector_id | creador_id | nom | tipus_via | orientacio | estat | data_fi_estat | ancoratge | tipus_roca | grau | restriccions");
@@ -261,6 +268,12 @@ public class Vista {
                     break;
                 case 2:
                     System.out.println("Llistant totes les escoles...");
+                    EscolaDAO escolaDAO = new MySQLEscolaDAO();
+                    List<Escola> escoles = escolaDAO.obtindreTots();
+                    System.out.println("id_escola | nom | lloc | aproximacio | numero_vies | popularitat | restriccions");
+                    for(Escola e : escoles){
+                        System.out.println(e);
+                    }
                     break;
                 case 0:
                     break;
@@ -327,6 +340,12 @@ public class Vista {
                     break;
                 case 2:
                     System.out.println("Llistant tots els escaladors...");
+                    EscaladorDAO escaladorDAO = new MySQLEscaladorDAO();
+                    List<Escalador> escaladors = escaladorDAO.obtindreTots();
+                    System.out.println("id_escalador | nom | alias | edat | nivell_maxim | estil_preferit");
+                    for (Escalador e : escaladors){
+                        System.out.println(e);
+                    }
                     break;
                 case 0:
                     break;

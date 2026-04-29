@@ -64,4 +64,16 @@ public class Escola {
     public void setRestriccions(String restriccions) {
         this.restriccions = restriccions;
     }
+
+    @Override
+    public String toString() {
+        return
+                id_escola + "\t\t" +
+                nom + "\t\t" +
+                lloc + "\t\t" +
+                aproximacio + "\t\t" +
+                numero_vies + "\t\t" +
+                popularitat + "\t\t" +
+                restriccions;
+    }
 }

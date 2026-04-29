@@ -46,4 +46,14 @@ public class Llarg {
     public void setLlargada_total(int llargada_total) {
         this.llargada_total = llargada_total;
     }
+
+    @Override
+    public String toString() {
+        return
+                id_llarg + "\t\t" +
+                via_id + "\t\t" +
+                llargada_llarg + "\t\t" +
+                NºLlarg + "\t\t" +
+                llargada_total;
+    }
 }
