@@ -46,10 +46,9 @@ public class MySQLSectorDAO implements SectorDAO {
                 s.setCoordenades(rs.getString("coordenades"));
                 s.setAproximacio(rs.getString("aproximacio"));
                 s.setNumero_vies(rs.getInt("numero_vies"));
-                //FALTA popularitat + "\t\t" +
-                //                restriccions + "\t\t" +
-                //                escola_id;
-
+                s.setPopularitat(rs.getString("popularitat"));
+                s.setRestriccions(rs.getString("restriccions"));
+                s.setEscola_id(rs.getLong("escola_id"));
                 sectors.add(s);
             }
 

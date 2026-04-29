@@ -42,10 +42,17 @@ public class MySQLViaDAO implements ViaDAO {
                 Via v = new Via();
 
                 v.setId_via(rs.getLong("id_via"));
+                v.setSector_id(rs.getLong("sector_id"));
+                v.setCreador_id(rs.getLong("creador_id"));
                 v.setNom(rs.getString("nom"));
-                v.setGrau(rs.getString("grau"));
+                v.setTipus_via(rs.getString("tipus_via"));
+                v.setOrientacio(rs.getString("orientacio"));
                 v.setEstat(rs.getString("estat"));
-
+                v.setData_fi_estat(rs.getDate("data_fi_estat"));
+                v.setAncoratge(rs.getString("ancoratge"));
+                v.setTipus_roca(rs.getString("tipus_roca"));
+                v.setGrau(rs.getString("grau"));
+                v.setRestriccions(rs.getBoolean("restriccions"));
                 vies.add(v);
             }
 
@@ -60,7 +67,6 @@ public class MySQLViaDAO implements ViaDAO {
     public Via obtenir(Long id) {
         return null;
     }
-
-
+    
 
 }

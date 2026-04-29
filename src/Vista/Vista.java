@@ -1,6 +1,9 @@
 package Vista;
+import DAO.MySQL.MySQLSectorDAO;
 import DAO.MySQL.MySQLViaDAO;
+import DAO.SectorDAO;
 import DAO.ViaDAO;
+import Model.Sector;
 import Model.Via;
 
 import java.sql.Connection;
@@ -288,6 +291,12 @@ public class Vista {
                     break;
                 case 2:
                     System.out.println("Llistant tots els sectors...");
+                    SectorDAO sectorDAO = new MySQLSectorDAO();
+                    List<Sector> sectors = sectorDAO.obtindreTots();
+                    System.out.println("id_sector | nom | coordenades | aproximacio | numero_vies | popularitat | restriccions | escola_id");
+                    for(Sector s : sectors){
+                        System.out.println(s);
+                    }
                     break;
                 case 0:
                     break;
