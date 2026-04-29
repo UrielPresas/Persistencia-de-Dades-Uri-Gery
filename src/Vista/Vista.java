@@ -1,4 +1,5 @@
 package Vista;
+
 import DAO.EscaladorDAO;
 import DAO.EscolaDAO;
 import DAO.MySQL.MySQLEscaladorDAO;
@@ -13,6 +14,7 @@ import Model.Sector;
 import Model.Via;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -79,8 +81,7 @@ public class Vista {
                     System.out.println("Crear Via...");
                     break;
                 case 2:
-                    System.out.println("Modificar Via...");
-                    break;
+                    modificarVia();
                 case 3:
                     llistarVies();
                     break;
@@ -234,7 +235,7 @@ public class Vista {
                     System.out.println("Llistant totes les vies...");
                     ViaDAO viaDAO = new MySQLViaDAO();
                     List<Via> vies = viaDAO.obtindreTots();
-                    System.out.println("id_via | sector_id | creador_id | nom | tipus_via | orientacio | estat | data_fi_estat | ancoratge | tipus_roca | grau | restriccions");
+                    viaHeader();
                     for(Via v : vies){
                         System.out.println(v);
                     }
@@ -270,7 +271,7 @@ public class Vista {
                     System.out.println("Llistant totes les escoles...");
                     EscolaDAO escolaDAO = new MySQLEscolaDAO();
                     List<Escola> escoles = escolaDAO.obtindreTots();
-                    System.out.println("id_escola | nom | lloc | aproximacio | numero_vies | popularitat | restriccions");
+                    escolaHeader();
                     for(Escola e : escoles){
                         System.out.println(e);
                     }
@@ -306,7 +307,7 @@ public class Vista {
                     System.out.println("Llistant tots els sectors...");
                     SectorDAO sectorDAO = new MySQLSectorDAO();
                     List<Sector> sectors = sectorDAO.obtindreTots();
-                    System.out.println("id_sector | nom | coordenades | aproximacio | numero_vies | popularitat | restriccions | escola_id");
+                    sectorHeader();
                     for(Sector s : sectors){
                         System.out.println(s);
                     }
@@ -342,7 +343,7 @@ public class Vista {
                     System.out.println("Llistant tots els escaladors...");
                     EscaladorDAO escaladorDAO = new MySQLEscaladorDAO();
                     List<Escalador> escaladors = escaladorDAO.obtindreTots();
-                    System.out.println("id_escalador | nom | alias | edat | nivell_maxim | estil_preferit");
+                    escaladorHeader();
                     for (Escalador e : escaladors){
                         System.out.println(e);
                     }
@@ -470,6 +471,121 @@ public class Vista {
             }
 
         } while (opcion != 0);
+    }
+
+    private static void modificarVia(){
+        Scanner sc = new Scanner(System.in);
+
+        //Mostar totes les vies
+        ViaDAO viaDAO = new MySQLViaDAO();
+        List<Via> vies = viaDAO.obtindreTots();
+        for(Via v : vies){
+            System.out.println(v);
+        }
+
+        //Demanar via específica per ID
+        System.out.println("ID de la via: ");
+        long id = Long.parseLong(sc.nextLine());
+
+        //Buscar Via per ID
+        Via via = viaDAO.obtenir(id);
+
+        //Comprovació de l'existència de la Via
+        if(via == null){
+            System.out.println("Via no trobada");
+        }
+
+        //Demanar canvis
+
+        //Nom
+        System.out.println("Nom (" + via.getNom() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String nom = sc.nextLine();
+
+        if(!nom.isBlank()){
+            via.setNom(nom);
+        }
+
+        //Tipus_via
+        System.out.println("Tipus_via (" + via.getTipus_via() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String tipus_via = sc.nextLine();
+
+        if(!tipus_via.isBlank()){
+            via.setTipus_via(tipus_via);
+        }
+
+        //Orientacio
+        System.out.println("Orientacio (" + via.getOrientacio() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String orientacio = sc.nextLine();
+
+        if(!orientacio.isBlank()){
+            via.setOrientacio(orientacio);
+        }
+
+        //Estat
+        System.out.println("Estat (" + via.getEstat() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String estat = sc.nextLine();
+
+        if(!estat.isBlank()){
+            via.setEstat(estat);
+        }
+
+        //Data_Fi_Estat
+        /* MODIFICAR EL CAMPO DE DATA_FI_ESTAT A LOCALDATE PARA HACER LAS COSAS MEJOR
+        System.out.println("Data_Fi_Estat (" + via.getData_fi_estat() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String data_fi_estat = sc.nextLine();
+
+        if(!data_fi_estat.isBlank()){
+            via.setData_fi_estat(data_fi_estat);
+        }
+         */
+
+        //Ancoratge
+        System.out.println("Ancoratge (" + via.getAncoratge() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String ancoratge = sc.nextLine();
+
+        if(!ancoratge.isBlank()){
+            via.setAncoratge(ancoratge);
+        }
+
+        //Tipus_Roca
+        System.out.println("Tipus_Roca (" + via.getTipus_roca() + ") pressiona 'Enter' si vols modificar-lo: ");
+        String tipus_roca = sc.nextLine();
+
+        if(!tipus_roca.isBlank()){
+            via.setTipus_roca(tipus_roca);
+        }
+
+        //Grau
+        System.out.println("Grau (" + via.getGrau() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String grau = sc.nextLine();
+
+        if(!grau.isBlank()){
+            via.setGrau(grau);
+        }
+
+        //Restriccions
+        System.out.println("Restriccions (" + via.isRestriccions() + ") pressiona 'Enter' si no vols modificar-lo:");
+        Boolean restriccions = sc.nextBoolean();
+
+        if(!restriccions.toString().isBlank()){
+            via.setRestriccions(restriccions);
+        }
+    }
+
+    private static void viaHeader(){
+        System.out.println("id_via | sector_id | creador_id | nom | tipus_via | orientacio | estat | data_fi_estat | ancoratge | tipus_roca | grau | restriccions");
+    }
+
+    private static void escolaHeader(){
+        System.out.println("id_escola | nom | lloc | aproximacio | numero_vies | popularitat | restriccions");
+    }
+
+    private static void sectorHeader(){
+        System.out.println("id_sector | nom | coordenades | aproximacio | numero_vies | popularitat | restriccions | escola_id");
+    }
+
+    private static void escaladorHeader(){
+        System.out.println("id_escalador | nom | alias | edat | nivell_maxim | estil_preferit");
     }
 
 }
