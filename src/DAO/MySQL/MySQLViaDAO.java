@@ -18,7 +18,7 @@ public class MySQLViaDAO implements ViaDAO {
 
     @Override
     public void modificar(Via c) {
-        String sql = "UPDATE via SET nom=?, tipus_via=?, orientacio=?, estat=?, data_fi_estat=?, ancoratge=?, tipus_roca=?, grau=?, restriccions=?";
+        String sql = "UPDATE via SET nom=?, tipus_via=?, orientacio=?, estat=?, data_fi_estat=?, ancoratge=?, tipus_roca=?, grau=?, restriccions=? WHERE id_via=?";
         try (Connection conn = ConexioFactory.getConnection("mysql");
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -31,6 +31,7 @@ public class MySQLViaDAO implements ViaDAO {
             ps.setString(7, c.getTipus_roca());
             ps.setString(8, c.getGrau());
             ps.setBoolean(9, c.isRestriccions());
+            ps.setLong(10, c.getId_via());
 
             ps.executeUpdate();
 
@@ -66,7 +67,12 @@ public class MySQLViaDAO implements ViaDAO {
                 v.setTipus_via(rs.getString("tipus_via"));
                 v.setOrientacio(rs.getString("orientacio"));
                 v.setEstat(rs.getString("estat"));
-                v.setData_fi_estat(rs.getDate("data_fi_estat").toLocalDate());
+
+                Date data = rs.getDate("data_fi_estat");
+                if(data != null){
+                    v.setData_fi_estat(data.toLocalDate());
+                }
+
                 v.setAncoratge(rs.getString("ancoratge"));
                 v.setTipus_roca(rs.getString("tipus_roca"));
                 v.setGrau(rs.getString("grau"));
@@ -103,7 +109,12 @@ public class MySQLViaDAO implements ViaDAO {
                 v.setTipus_via(rs.getString("tipus_via"));
                 v.setOrientacio(rs.getString("orientacio"));
                 v.setEstat(rs.getString("estat"));
-                v.setData_fi_estat(rs.getDate("data_fi_estat").toLocalDate());
+
+                Date data = rs.getDate("data_fi_estat");
+                if(data != null){
+                    v.setData_fi_estat(data.toLocalDate());
+                }
+
                 v.setAncoratge(rs.getString("ancoratge"));
                 v.setTipus_roca(rs.getString("tipus_roca"));
                 v.setGrau(rs.getString("grau"));

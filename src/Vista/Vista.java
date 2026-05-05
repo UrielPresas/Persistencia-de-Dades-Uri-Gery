@@ -83,6 +83,7 @@ public class Vista {
                     break;
                 case 2:
                     modificarVia();
+                    break;
                 case 3:
                     llistarVies();
                     break;
@@ -485,8 +486,11 @@ public class Vista {
         }
 
         //Demanar via específica per ID
-        System.out.println("ID de la via: ");
+        System.out.println("ID de la via: \n0 per sortir");
         long id = Long.parseLong(sc.nextLine());
+        if(id == 0){
+            return;
+        }
 
         //Buscar Via per ID
         Via via = viaDAO.obtenir(id);
@@ -494,6 +498,7 @@ public class Vista {
         //Comprovació de l'existència de la Via
         if(via == null){
             System.out.println("Via no trobada");
+            return;
         }
 
         //Demanar canvis
@@ -564,10 +569,10 @@ public class Vista {
 
         //Restriccions
         System.out.println("Restriccions (" + via.isRestriccions() + ") pressiona 'Enter' si no vols modificar-lo:");
-        Boolean restriccions = sc.nextBoolean();
+        String restriccions = sc.nextLine();
 
-        if(!restriccions.toString().isBlank()){
-            via.setRestriccions(restriccions);
+        if(!restriccions.isBlank()){
+            via.setRestriccions(Boolean.parseBoolean(restriccions));
         }
     }
 
