@@ -82,6 +82,7 @@ public class Vista {
                     System.out.println("Crear Via...");
                     break;
                 case 2:
+                    viaHeader();
                     modificarVia();
                     break;
                 case 3:
