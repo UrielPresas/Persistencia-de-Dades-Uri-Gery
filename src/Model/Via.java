@@ -1,6 +1,7 @@
 package Model;
 
-import java.util.Date;
+//import java.util.Date;
+import java.time.LocalDate;
 
 public class Via {
     private long id_via;
@@ -10,7 +11,8 @@ public class Via {
     private String tipus_via;
     private String orientacio;
     private String estat;
-    private Date data_fi_estat;
+    //private Date data_fi_estat;
+    private LocalDate data_fi_estat;
     private String ancoratge;
     private String tipus_roca;
     private String grau;
@@ -44,7 +46,7 @@ public class Via {
         return estat;
     }
 
-    public Date getData_fi_estat() {
+    public LocalDate getData_fi_estat() {
         return data_fi_estat;
     }
 
@@ -92,7 +94,7 @@ public class Via {
         this.estat = estat;
     }
 
-    public void setData_fi_estat(Date data_fi_estat) {
+    public void setData_fi_estat(LocalDate data_fi_estat) {
         this.data_fi_estat = data_fi_estat;
     }
 

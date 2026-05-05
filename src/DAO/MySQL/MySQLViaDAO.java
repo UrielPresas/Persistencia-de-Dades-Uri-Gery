@@ -26,7 +26,7 @@ public class MySQLViaDAO implements ViaDAO {
             ps.setString(2, c.getTipus_via());
             ps.setString(3, c.getOrientacio());
             ps.setString(4, c.getEstat());
-            ps.setDate(5, (Date) c.getData_fi_estat());
+            ps.setDate(5, java.sql.Date.valueOf(c.getData_fi_estat()));
             ps.setString(6, c.getAncoratge());
             ps.setString(7, c.getTipus_roca());
             ps.setString(8, c.getGrau());
@@ -66,7 +66,7 @@ public class MySQLViaDAO implements ViaDAO {
                 v.setTipus_via(rs.getString("tipus_via"));
                 v.setOrientacio(rs.getString("orientacio"));
                 v.setEstat(rs.getString("estat"));
-                v.setData_fi_estat(rs.getDate("data_fi_estat"));
+                v.setData_fi_estat(rs.getDate("data_fi_estat").toLocalDate());
                 v.setAncoratge(rs.getString("ancoratge"));
                 v.setTipus_roca(rs.getString("tipus_roca"));
                 v.setGrau(rs.getString("grau"));
@@ -103,7 +103,7 @@ public class MySQLViaDAO implements ViaDAO {
                 v.setTipus_via(rs.getString("tipus_via"));
                 v.setOrientacio(rs.getString("orientacio"));
                 v.setEstat(rs.getString("estat"));
-                v.setData_fi_estat(rs.getDate("data_fi_estat"));
+                v.setData_fi_estat(rs.getDate("data_fi_estat").toLocalDate());
                 v.setAncoratge(rs.getString("ancoratge"));
                 v.setTipus_roca(rs.getString("tipus_roca"));
                 v.setGrau(rs.getString("grau"));

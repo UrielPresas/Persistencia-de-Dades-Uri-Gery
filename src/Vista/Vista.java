@@ -14,6 +14,7 @@ import Model.Sector;
 import Model.Via;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -530,14 +531,12 @@ public class Vista {
         }
 
         //Data_Fi_Estat
-        /* MODIFICAR EL CAMPO DE DATA_FI_ESTAT A LOCALDATE PARA HACER LAS COSAS MEJOR
-        System.out.println("Data_Fi_Estat (" + via.getData_fi_estat() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        System.out.println("Data_Fi_Estat (" + via.getData_fi_estat() + ") pressiona 'Enter' si no vols modificar-lo: \nFORMAT: YYYY-MM-DD");
         String data_fi_estat = sc.nextLine();
 
         if(!data_fi_estat.isBlank()){
-            via.setData_fi_estat(data_fi_estat);
+            via.setData_fi_estat(LocalDate.parse(data_fi_estat));
         }
-         */
 
         //Ancoratge
         System.out.println("Ancoratge (" + via.getAncoratge() + ") pressiona 'Enter' si no vols modificar-lo: ");
