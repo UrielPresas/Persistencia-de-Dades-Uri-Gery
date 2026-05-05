@@ -413,7 +413,7 @@ public class Vista {
 
             switch (opcion){
                 case 1:
-                    System.out.println("Mostrant escoles amb restriccions...");
+                    mostrarViesPerEscolaAmbRestriccions();
                     break;
                 case 0:
                     break;
@@ -591,6 +591,41 @@ public class Vista {
 
     private static void escaladorHeader(){
         System.out.println("id_escalador | nom | alias | edat | nivell_maxim | estil_preferit");
+    }
+
+    private static void mostrarViesPerEscolaAmbRestriccions() {
+
+        Scanner sc = new Scanner(System.in);
+
+        EscolaDAO escolaDAO = new MySQLEscolaDAO();
+        MySQLViaDAO viaDAO = new MySQLViaDAO();
+
+        List<Escola> escoles = escolaDAO.obtindreTots();
+
+        System.out.println("\n--- ESCOLES DISPONIBLES ---");
+        for (int i = 0; i < escoles.size(); i++) {
+            System.out.println((i + 1) + ". " + escoles.get(i).getNom());
+        }
+
+        System.out.print("Selecciona una escola: ");
+        int opcion = sc.nextInt();
+
+        if (opcion < 1 || opcion > escoles.size()) {
+            System.out.println("Opció no vàlida");
+            return;
+        }
+
+        Escola esc = escoles.get(opcion - 1);
+
+        List<Via> vies = viaDAO.obtindreViesAmbRestriccionsPerEscola(esc.getId_escola());
+
+        System.out.println("\n--- VIES AMB RESTRICCIONS ACTIVES ---");
+
+        if (vies.isEmpty()) {
+            System.out.println("No hi ha vies amb restriccions.");
+        } else {
+            vies.forEach(System.out::println);
+        }
     }
 
 }

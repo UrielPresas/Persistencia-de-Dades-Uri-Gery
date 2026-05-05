@@ -131,5 +131,51 @@ public class MySQLViaDAO implements ViaDAO {
 
     }
 
+    public List<Via> obtindreViesAmbRestriccionsPerEscola(long idEscola) {
+
+        List<Via> vies = new ArrayList<>();
+
+        String sql = """
+    SELECT v.*
+    FROM via v
+    JOIN sector s ON v.sector_id = s.id_sector
+    WHERE s.escola_id = ?
+      AND v.restriccions = true
+      AND v.data_fi_estat BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY)
+""";
+
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, idEscola);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Via v = new Via();
+
+                v.setId_via(rs.getLong("id_via"));
+                v.setSector_id(rs.getLong("sector_id"));
+                v.setCreador_id(rs.getLong("creador_id"));
+                v.setNom(rs.getString("nom"));
+                v.setTipus_via(rs.getString("tipus_via"));
+                v.setOrientacio(rs.getString("orientacio"));
+                v.setEstat(rs.getString("estat"));
+                v.setData_fi_estat(rs.getDate("data_fi_estat").toLocalDate());
+                v.setAncoratge(rs.getString("ancoratge"));
+                v.setTipus_roca(rs.getString("tipus_roca"));
+                v.setGrau(rs.getString("grau"));
+                v.setRestriccions(rs.getBoolean("restriccions"));
+
+                vies.add(v);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return vies;
+    }
+
 
 }
