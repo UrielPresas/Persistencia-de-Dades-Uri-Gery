@@ -114,6 +114,23 @@ public class Via {
         this.restriccions = restriccions;
     }
 
+    public void aplicarReglesEstat() {
+
+        if (estat == null) {
+            return;
+        }
+
+        if (estat.equalsIgnoreCase("apte")) {
+            restriccions = false;
+            data_fi_estat = null;
+        }
+
+        else if (estat.equalsIgnoreCase("construccio")
+                || estat.equalsIgnoreCase("tancada")) {
+            restriccions = true;
+        }
+    }
+
     @Override
     public String toString() {
         return

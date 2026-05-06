@@ -76,6 +76,7 @@ public class Vista {
                             "0. Sortir");
 
             opcion = sc.nextInt();
+            sc.nextLine();
 
             switch (opcion){
                 case 1:
@@ -482,6 +483,7 @@ public class Vista {
         //Mostar totes les vies
         ViaDAO viaDAO = new MySQLViaDAO();
         List<Via> vies = viaDAO.obtindreTots();
+        viaHeader();
         for(Via v : vies){
             System.out.println(v);
         }
@@ -535,13 +537,17 @@ public class Vista {
         if(!estat.isBlank()){
             via.setEstat(estat);
         }
+        //Trucar funcio de logica de la via
+        via.aplicarReglesEstat();
 
-        //Data_Fi_Estat
-        System.out.println("Data_Fi_Estat (" + via.getData_fi_estat() + ") pressiona 'Enter' si no vols modificar-lo: \nFORMAT: YYYY-MM-DD");
-        String data_fi_estat = sc.nextLine();
+        if(via.isRestriccions()){
 
-        if(!data_fi_estat.isBlank()){
-            via.setData_fi_estat(LocalDate.parse(data_fi_estat));
+            System.out.println("Data_Fi_Estat (" + via.getData_fi_estat() + ")");
+            String data = sc.nextLine();
+
+            if(!data.isBlank()){
+                via.setData_fi_estat(LocalDate.parse(data));
+            }
         }
 
         //Ancoratge
@@ -568,13 +574,9 @@ public class Vista {
             via.setGrau(grau);
         }
 
-        //Restriccions
-        System.out.println("Restriccions (" + via.isRestriccions() + ") pressiona 'Enter' si no vols modificar-lo:");
-        String restriccions = sc.nextLine();
-
-        if(!restriccions.isBlank()){
-            via.setRestriccions(Boolean.parseBoolean(restriccions));
-        }
+        //Guardar els canvis a la BD
+        viaDAO.modificar(via);
+        System.out.println("Via modificada correctament");
     }
 
     private static void viaHeader(){
