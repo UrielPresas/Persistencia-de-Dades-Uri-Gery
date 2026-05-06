@@ -531,7 +531,7 @@ public class Vista {
         }
 
         //Estat
-        System.out.println("Estat (" + via.getEstat() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        System.out.println("Estat (" + via.getEstat() + ") pressiona 'Enter' si no vols modificar-lo: \nESTATS: apte | construccio | tancada");
         String estat = sc.nextLine();
 
         if(!estat.isBlank()){
@@ -542,7 +542,7 @@ public class Vista {
 
         if(via.isRestriccions()){
 
-            System.out.println("Data_Fi_Estat (" + via.getData_fi_estat() + ")");
+            System.out.println("Data_Fi_Estat (" + via.getData_fi_estat() + ") pressiona 'Enter' si no vols modificar-lo: \nFORMAT: YYYY-MM-DD");
             String data = sc.nextLine();
 
             if(!data.isBlank()){
