@@ -83,7 +83,6 @@ public class Vista {
                     System.out.println("Crear Via...");
                     break;
                 case 2:
-                    viaHeader();
                     modificarVia();
                     break;
                 case 3:
@@ -161,7 +160,7 @@ public class Vista {
                     System.out.println("Crear Sector...");
                     break;
                 case 2:
-                    System.out.println("Modificar Sector...");
+                    modificarSector();
                     break;
                 case 3:
                     llistarSectors();
@@ -577,6 +576,90 @@ public class Vista {
         //Guardar els canvis a la BD
         viaDAO.modificar(via);
         System.out.println("Via modificada correctament");
+    }
+
+    private static void modificarSector(){
+        Scanner sc = new Scanner(System.in);
+
+        //Mostar tots els sectors
+        SectorDAO sectorDAO = new MySQLSectorDAO();
+        List<Sector> sectors = sectorDAO.obtindreTots();
+        sectorHeader();
+        for(Sector s : sectors){
+            System.out.println(s);
+        }
+
+        //Demanar sector específic per ID
+        System.out.println("ID del sector: \n0 per sortir");
+        long id = Long.parseLong(sc.nextLine());
+        if(id == 0){
+            return;
+        }
+
+        //Buscar Sector per ID
+        Sector sector = sectorDAO.obtenir(id);
+
+        //Comprovació de l'existència del Sector
+        if(sector == null){
+            System.out.println("Via no trobada");
+            return;
+        }
+
+        //Demanar canvis
+
+        //Nom
+        System.out.println("Nom (" + sector.getNom() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String nom = sc.nextLine();
+
+        if(!nom.isBlank()){
+            sector.setNom(nom);
+        }
+
+        //Coordenades
+        System.out.println("Coordenades (" + sector.getCoordenades() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String coordenades = sc.nextLine();
+
+        if(!coordenades.isBlank()){
+            sector.setCoordenades(coordenades);
+        }
+
+        //Aproximacio
+        System.out.println("Aproximacio (" + sector.getAproximacio() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String aproximacio = sc.nextLine();
+
+        if(!aproximacio.isBlank()){
+            sector.setAproximacio(aproximacio);
+        }
+
+        //Numero_Vies
+        System.out.println("Numero_vies (" + sector.getNumero_vies() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        int numero_vies = sc.nextInt();
+        sc.nextLine();
+
+        String numero_viesString = numero_vies+"";
+
+        if(!numero_viesString.isBlank()){
+            sector.setNumero_vies(numero_vies);
+        }
+
+        //Popularitat
+        System.out.println("Popularitat (" + sector.getPopularitat() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String popularitat = sc.nextLine();
+
+        if(!popularitat.isBlank()){
+            sector.setPopularitat(popularitat);
+        }
+
+        //Restriccions
+        System.out.println("Restriccions (" + sector.getRestriccions() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String restriccions = sc.nextLine();
+
+        if(!restriccions.isBlank()){
+            sector.setRestriccions(restriccions);
+        }
+
+        sectorDAO.modificar(sector);
+        System.out.println("Sector modificat correctament");
     }
 
     private static void viaHeader(){
