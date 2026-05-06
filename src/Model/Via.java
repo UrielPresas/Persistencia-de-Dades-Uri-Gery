@@ -133,18 +133,20 @@ public class Via {
 
     @Override
     public String toString() {
-        return
-                id_via + "\t\t" +
-                sector_id + "\t\t" +
-                creador_id + "\t\t" +
-                nom + "\t\t" +
-                tipus_via + "\t\t" +
-                orientacio + "\t\t" +
-                estat + "\t\t" +
-                data_fi_estat + "\t\t" +
-                ancoratge + "\t\t" +
-                tipus_roca + "\t\t" +
-                grau + "\t\t" +
-                restriccions;
+        return String.format(
+                "%-8d %-10d %-12d %-20s %-15s %-12s %-12s %-15s %-15s %-15s %-8s %-15s",
+                id_via,
+                sector_id,
+                creador_id,
+                nom,
+                tipus_via,
+                orientacio,
+                estat,
+                data_fi_estat,
+                ancoratge,
+                tipus_roca,
+                grau,
+                restriccions
+        );
     }
 }

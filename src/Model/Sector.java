@@ -76,14 +76,16 @@ public class Sector {
 
     @Override
     public String toString() {
-        return
-                id_sector + "\t\t" +
-                nom + "\t\t" +
-                coordenades + "\t\t" +
-                aproximacio + "\t\t" +
-                numero_vies + "\t\t" +
-                popularitat + "\t\t" +
-                restriccions + "\t\t" +
-                escola_id;
+        return String.format(
+                "%-12d %-20s %-15s %-15s %-15d %-15s %-15s %-10d",
+                id_sector,
+                nom,
+                coordenades,
+                aproximacio,
+                numero_vies,
+                popularitat,
+                restriccions,
+                escola_id
+        );
     }
 }

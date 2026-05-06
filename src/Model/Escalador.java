@@ -58,12 +58,14 @@ public class Escalador {
 
     @Override
     public String toString() {
-        return
-                id_escalador + "\t\t" +
-                nom + "\t\t" +
-                alias + "\t\t" +
-                edat + "\t\t" +
-                nivell_maxim + "\t\t" +
-                estil_preferit;
+        return String.format(
+                "%-15d %-15s %-15s %-10d %-15s %-15s",
+                id_escalador,
+                nom,
+                alias,
+                edat,
+                nivell_maxim,
+                estil_preferit
+        );
     }
 }

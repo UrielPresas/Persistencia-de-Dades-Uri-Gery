@@ -8,6 +8,8 @@ import DAO.MySQL.MySQLSectorDAO;
 import DAO.MySQL.MySQLViaDAO;
 import DAO.SectorDAO;
 import DAO.ViaDAO;
+import Model.DTO.ViaDifDTO;
+import Model.DTO.ViaTancadaDTO;
 import Model.Escalador;
 import Model.Escola;
 import Model.Sector;
@@ -225,7 +227,8 @@ public class Vista {
             System.out.println(
                     "\n------LLISTAR VIES------\n" +
                             "1. Llistar una Via\n" +
-                            "2. Llistar totes\n" +
+                            "2. Llistar vies per dificultat\n"+
+                            "3. Llistar totes\n" +
                             "0. Sortir");
 
             opcion = sc.nextInt();
@@ -235,6 +238,9 @@ public class Vista {
                     llistarUnaVia();
                     break;
                 case 2:
+                    mostrarViesPerDificultat();
+                    break;
+                case 3:
                     System.out.println("Llistant totes les vies...");
                     ViaDAO viaDAO = new MySQLViaDAO();
                     List<Via> vies = viaDAO.obtindreTots();
@@ -662,21 +668,93 @@ public class Vista {
         System.out.println("Sector modificat correctament");
     }
 
-    private static void viaHeader(){
-        System.out.println("id_via | sector_id | creador_id | nom | tipus_via | orientacio | estat | data_fi_estat | ancoratge | tipus_roca | grau | restriccions");
+    private static void viaHeader() {
+
+        System.out.printf(
+                "%-8s %-10s %-12s %-20s %-15s %-12s %-12s %-15s %-15s %-15s %-8s %-15s\n",
+                "id_via",
+                "sector_id",
+                "creador_id",
+                "nom",
+                "tipus_via",
+                "orientacio",
+                "estat",
+                "data_fi",
+                "ancoratge",
+                "tipus_roca",
+                "grau",
+                "restriccions"
+        );
     }
 
-    private static void escolaHeader(){
-        System.out.println("id_escola | nom | lloc | aproximacio | numero_vies | popularitat | restriccions");
+    private static void escolaHeader() {
+
+        System.out.printf(
+                "%-10s %-15s %-15s %-15s %-15s %-15s %-15s\n",
+                "id_escola",
+                "nom",
+                "lloc",
+                "aproximacio",
+                "numero_vies",
+                "popularitat",
+                "restriccions"
+        );
     }
 
-    private static void sectorHeader(){
-        System.out.println("id_sector | nom | coordenades | aproximacio | numero_vies | popularitat | restriccions | escola_id");
+    private static void sectorHeader() {
+
+        System.out.printf(
+                "%-12s %-20s %-15s %-15s %-15s %-15s %-15s %-10s\n",
+                "id_sector",
+                "nom",
+                "coordenades",
+                "aproximacio",
+                "numero_vies",
+                "popularitat",
+                "restriccions",
+                "escola_id"
+        );
     }
 
-    private static void escaladorHeader(){
-        System.out.println("id_escalador | nom | alias | edat | nivell_maxim | estil_preferit");
+    private static void escaladorHeader() {
+
+        System.out.printf(
+                "%-15s %-15s %-15s %-10s %-15s %-15s\n",
+                "id_escalador",
+                "nom",
+                "alias",
+                "edat",
+                "nivell_maxim",
+                "estil_preferit"
+        );
     }
+
+    private static void ViaRestriccioHeader(){
+        System.out.printf(
+                "%-8s %-15s %-15s %-20s %-15s %-12s %-15s %-15s %-15s %-15s %-8s %-15s\n",
+                "id_via",
+                "nom_sector",
+                "nom_escola",
+                "nom",
+                "tipus_via",
+                "orientacio",
+                "estat",
+                "data_fi_estat",
+                "ancoratge",
+                "tipus_roca",
+                "grau",
+                "restriccions"
+        );    }
+
+
+    private static void ViaDifHeader(){
+        System.out.printf(
+                "%-20s %-8s %-25s %-20s\n",
+                "VIA",
+                "GRAU",
+                "SECTOR",
+                "ESCOLA"
+        );    }
 
     private static void mostrarViesPerEscolaAmbRestriccions() {
 
@@ -688,6 +766,7 @@ public class Vista {
         List<Escola> escoles = escolaDAO.obtindreTots();
 
         System.out.println("\n--- ESCOLES DISPONIBLES ---");
+
         for (int i = 0; i < escoles.size(); i++) {
             System.out.println((i + 1) + ". " + escoles.get(i).getNom());
         }
@@ -702,12 +781,39 @@ public class Vista {
 
         Escola esc = escoles.get(opcion - 1);
 
-        List<Via> vies = viaDAO.obtindreViesAmbRestriccionsPerEscola(esc.getId_escola());
+        List<ViaTancadaDTO> vies =
+                viaDAO.obtindreViesAmbRestriccionsPerEscola(esc.getId_escola());
 
         System.out.println("\n--- VIES AMB RESTRICCIONS ACTIVES ---");
-
         if (vies.isEmpty()) {
             System.out.println("No hi ha vies amb restriccions.");
+        } else {
+            ViaRestriccioHeader();
+            vies.forEach(System.out::println);
+        }
+    }
+
+    private static void mostrarViesPerDificultat() {
+
+        Scanner sc = new Scanner(System.in);
+
+        MySQLViaDAO viaDAO = new MySQLViaDAO();
+
+        System.out.print("Introdueix grau mínim: ");
+        String grauMin = sc.nextLine();
+
+        System.out.print("Introdueix grau màxim: ");
+        String grauMax = sc.nextLine();
+
+        List<ViaDifDTO> vies =
+                viaDAO.cercarViesPerDificultat(grauMin, grauMax);
+
+        System.out.println("\n--- VIES PER DIFICULTAT ---\n");
+
+        ViaDifHeader();
+
+        if (vies.isEmpty()) {
+            System.out.println("No s'han trobat vies.");
         } else {
             vies.forEach(System.out::println);
         }

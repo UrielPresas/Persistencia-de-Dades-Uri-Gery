@@ -1,6 +1,8 @@
 package DAO.MySQL;
 
 import DAO.ViaDAO;
+import Model.DTO.ViaDifDTO;
+import Model.DTO.ViaTancadaDTO;
 import Model.Via;
 import DAO.Connexions.ConexioFactory;
 
@@ -136,46 +138,88 @@ public class MySQLViaDAO implements ViaDAO {
 
     }
 
-    public List<Via> obtindreViesAmbRestriccionsPerEscola(long idEscola) {
+    public List<ViaTancadaDTO> obtindreViesAmbRestriccionsPerEscola(long idEscola) {
 
-        List<Via> vies = new ArrayList<>();
+        List<ViaTancadaDTO> vies = new ArrayList<>();
 
         String sql = """
-    SELECT v.*
-    FROM via v
-    JOIN sector s ON v.sector_id = s.id_sector
-    WHERE s.escola_id = ?
-      AND v.restriccions = true
-      AND v.data_fi_estat BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY)
-""";
+        SELECT v.*, s.nom AS nom_sector, e.nom AS nom_escola
+        FROM via v
+        JOIN sector s ON v.sector_id = s.id_sector
+        JOIN escola e ON s.escola_id = e.id_escola
+        WHERE s.escola_id = ?
+          AND v.restriccions = true
+          AND v.data_fi_estat BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY)
+    """;
 
         try (Connection conn = ConexioFactory.getConnection("mysql");
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, idEscola);
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
 
-                Via v = new Via();
-
-                v.setId_via(rs.getLong("id_via"));
-                v.setSector_id(rs.getLong("sector_id"));
-                v.setCreador_id(rs.getLong("creador_id"));
-                v.setNom(rs.getString("nom"));
-                v.setTipus_via(rs.getString("tipus_via"));
-                v.setOrientacio(rs.getString("orientacio"));
-                v.setEstat(rs.getString("estat"));
-
                 Date data = rs.getDate("data_fi_estat");
-                if(data != null){
-                    v.setData_fi_estat(data.toLocalDate());
-                }
 
-                v.setAncoratge(rs.getString("ancoratge"));
-                v.setTipus_roca(rs.getString("tipus_roca"));
-                v.setGrau(rs.getString("grau"));
-                v.setRestriccions(rs.getBoolean("restriccions"));
+                ViaTancadaDTO v = new ViaTancadaDTO(
+                        rs.getLong("id_via"),
+                        rs.getString("nom_sector"),
+                        rs.getString("nom_escola"),
+                        rs.getString("nom"),
+                        rs.getString("tipus_via"),
+                        rs.getString("orientacio"),
+                        rs.getString("estat"),
+                        data != null ? data.toLocalDate() : null,
+                        rs.getString("ancoratge"),
+                        rs.getString("tipus_roca"),
+                        rs.getString("grau"),
+                        rs.getBoolean("restriccions")
+                );
+
+                vies.add(v);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return vies;
+    }
+
+    public List<ViaDifDTO> cercarViesPerDificultat(String grauMin, String grauMax) {
+
+        List<ViaDifDTO> vies = new ArrayList<>();
+
+        String sql = """
+        SELECT v.nom AS nom_via,
+               v.grau,
+               s.nom AS nom_sector,
+               e.nom AS nom_escola
+        FROM via v
+        JOIN sector s ON v.sector_id = s.id_sector
+        JOIN escola e ON s.escola_id = e.id_escola
+        WHERE v.grau BETWEEN ? AND ?
+        ORDER BY v.grau
+    """;
+
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, grauMin);
+            ps.setString(2, grauMax);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                ViaDifDTO v = new ViaDifDTO(
+                        rs.getString("nom_via"),
+                        rs.getString("grau"),
+                        rs.getString("nom_sector"),
+                        rs.getString("nom_escola")
+                );
 
                 vies.add(v);
             }

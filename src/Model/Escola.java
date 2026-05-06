@@ -67,13 +67,15 @@ public class Escola {
 
     @Override
     public String toString() {
-        return
-                id_escola + "\t\t" +
-                nom + "\t\t" +
-                lloc + "\t\t" +
-                aproximacio + "\t\t" +
-                numero_vies + "\t\t" +
-                popularitat + "\t\t" +
-                restriccions;
+        return String.format(
+                "%-10d %-15s %-15s %-15s %-15d %-15s %-15s",
+                id_escola,
+                nom,
+                lloc,
+                aproximacio,
+                numero_vies,
+                popularitat,
+                restriccions
+        );
     }
 }
