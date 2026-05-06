@@ -161,7 +161,12 @@ public class MySQLViaDAO implements ViaDAO {
                 v.setTipus_via(rs.getString("tipus_via"));
                 v.setOrientacio(rs.getString("orientacio"));
                 v.setEstat(rs.getString("estat"));
-                v.setData_fi_estat(rs.getDate("data_fi_estat").toLocalDate());
+
+                Date data = rs.getDate("data_fi_estat");
+                if(data != null){
+                    v.setData_fi_estat(data.toLocalDate());
+                }
+
                 v.setAncoratge(rs.getString("ancoratge"));
                 v.setTipus_roca(rs.getString("tipus_roca"));
                 v.setGrau(rs.getString("grau"));
