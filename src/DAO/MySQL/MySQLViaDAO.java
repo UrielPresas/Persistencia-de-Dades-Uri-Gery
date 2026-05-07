@@ -2,6 +2,7 @@ package DAO.MySQL;
 
 import DAO.ViaDAO;
 import Model.DTO.ViaDifDTO;
+import Model.DTO.ViaEstatDTO;
 import Model.DTO.ViaTancadaDTO;
 import Model.Via;
 import DAO.Connexions.ConexioFactory;
@@ -217,6 +218,49 @@ public class MySQLViaDAO implements ViaDAO {
                 ViaDifDTO v = new ViaDifDTO(
                         rs.getString("nom_via"),
                         rs.getString("grau"),
+                        rs.getString("nom_sector"),
+                        rs.getString("nom_escola")
+                );
+
+                vies.add(v);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return vies;
+    }
+
+    public List<ViaEstatDTO> cercarViesPerEstat(String estat) {
+
+        List<ViaEstatDTO> vies = new ArrayList<>();
+
+        String sql = """
+    SELECT v.nom AS nom_via,
+           v.grau,
+           v.tipus_via,
+           s.nom AS nom_sector,
+           e.nom AS nom_escola
+    FROM via v
+    JOIN sector s ON v.sector_id = s.id_sector
+    JOIN escola e ON s.escola_id = e.id_escola
+    WHERE LOWER(v.estat) = LOWER(?)
+""";
+
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, estat);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                ViaEstatDTO v = new ViaEstatDTO(
+                        rs.getString("nom_via"),
+                        rs.getString("grau"),
+                        rs.getString("tipus_via"),
                         rs.getString("nom_sector"),
                         rs.getString("nom_escola")
                 );

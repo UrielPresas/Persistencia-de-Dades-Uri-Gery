@@ -4,6 +4,7 @@ package DAO.MySQL;
 
 import DAO.Connexions.ConexioFactory;
 import DAO.EscolaDAO;
+import Model.DTO.EscolaRestriccioDTO;
 import Model.Escola;
 import Model.Sector;
 
@@ -105,5 +106,39 @@ public class MySQLEscolaDAO implements EscolaDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<EscolaRestriccioDTO> obtindreEscolesAmbRestriccions() {
+
+        List<EscolaRestriccioDTO> escoles = new ArrayList<>();
+
+        String sql = """
+        SELECT nom, lloc, restriccions
+        FROM escola
+        WHERE restriccions IS NOT NULL
+          AND restriccions <> 'cap'
+    """;
+
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                EscolaRestriccioDTO e = new EscolaRestriccioDTO(
+                        rs.getString("nom"),
+                        rs.getString("lloc"),
+                        rs.getString("restriccions")
+                );
+
+                escoles.add(e);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return escoles;
     }
 }

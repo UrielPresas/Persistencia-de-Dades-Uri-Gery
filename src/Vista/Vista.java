@@ -8,7 +8,9 @@ import DAO.MySQL.MySQLSectorDAO;
 import DAO.MySQL.MySQLViaDAO;
 import DAO.SectorDAO;
 import DAO.ViaDAO;
+import Model.DTO.EscolaRestriccioDTO;
 import Model.DTO.ViaDifDTO;
+import Model.DTO.ViaEstatDTO;
 import Model.DTO.ViaTancadaDTO;
 import Model.Escalador;
 import Model.Escola;
@@ -227,8 +229,9 @@ public class Vista {
             System.out.println(
                     "\n------LLISTAR VIES------\n" +
                             "1. Llistar una Via\n" +
-                            "2. Llistar vies per dificultat\n"+
-                            "3. Llistar totes\n" +
+                            "2. Llistar Vies per dificultat\n"+
+                            "3. Llistar Vies per estat\n" +
+                            "4. Llistar totes\n" +
                             "0. Sortir");
 
             opcion = sc.nextInt();
@@ -241,6 +244,9 @@ public class Vista {
                     mostrarViesPerDificultat();
                     break;
                 case 3:
+                    mostrarViesPerEstat();
+                    break;
+                case 4:
                     System.out.println("Llistant totes les vies...");
                     ViaDAO viaDAO = new MySQLViaDAO();
                     List<Via> vies = viaDAO.obtindreTots();
@@ -412,7 +418,8 @@ public class Vista {
         do {
             System.out.println(
                     "\n------Filtres Escoles------\n" +
-                            "1. Escoles amb restriccions actives\n" +
+                            "1. Vies amb restriccions actives d'una escola \n" +
+                            "2. Escoles amb restriccions actives\n" +
                             "0. Sortir");
 
             opcion = sc.nextInt();
@@ -420,6 +427,9 @@ public class Vista {
             switch (opcion){
                 case 1:
                     mostrarViesPerEscolaAmbRestriccions();
+                    break;
+                case 2:
+                    mostrarEscolesAmbRestriccions();
                     break;
                 case 0:
                     break;
@@ -984,5 +994,61 @@ public class Vista {
             vies.forEach(System.out::println);
         }
     }
+
+    private static void mostrarViesPerEstat() {
+
+        Scanner sc = new Scanner(System.in);
+
+        MySQLViaDAO viaDAO = new MySQLViaDAO();
+
+        System.out.print("Introdueix estat (apte/construccio/tancada): ");
+        String estat = sc.nextLine();
+
+        List<ViaEstatDTO> vies =
+                viaDAO.cercarViesPerEstat(estat);
+
+        System.out.println("\n--- VIES SEGONS ESTAT ---\n");
+
+        ViesSegonEstat();
+
+        if (vies.isEmpty()) {
+            System.out.println("No s'han trobat vies.");
+        } else {
+            vies.forEach(System.out::println);
+        }
+    }
+
+    private static void mostrarEscolesAmbRestriccions() {
+
+        MySQLEscolaDAO escolaDAO = new MySQLEscolaDAO();
+
+        List<EscolaRestriccioDTO> escoles =
+                escolaDAO.obtindreEscolesAmbRestriccions();
+
+        System.out.println("\n--- ESCOLES AMB RESTRICCIONS ACTIVES ---\n");
+
+        System.out.printf(
+                "%-20s %-20s %-30s\n",
+                "ESCOLA",
+                "LLOC",
+                "RESTRICCIONS"
+        );
+
+        if (escoles.isEmpty()) {
+            System.out.println("No hi ha escoles amb restriccions.");
+        } else {
+            escoles.forEach(System.out::println);
+        }
+    }
+
+    private static void ViesSegonEstat(){
+        System.out.printf(
+                "%-20s %-12s %-10s %-20s %-20s\n",
+                "VIA",
+                "TIPUS",
+                "GRAU",
+                "SECTOR",
+                "ESCOLA"
+        );    }
 
 }
