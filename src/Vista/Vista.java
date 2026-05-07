@@ -200,7 +200,7 @@ public class Vista {
                     System.out.println("Crear Escalador...");
                     break;
                 case 2:
-                    System.out.println("Modificar Escalador...");
+                    modificarEscalador();
                     break;
                 case 3:
                     llistarEscaladors();
@@ -754,6 +754,84 @@ public class Vista {
 
         escolaDAO.modificar(escola);
         System.out.println("Escola modificada correctament");
+    }
+
+    private static void modificarEscalador(){
+        Scanner sc = new Scanner(System.in);
+
+        //Mostar tots els escaladors
+        EscaladorDAO escaladorDAO = new MySQLEscaladorDAO();
+        List<Escalador> escaladors = escaladorDAO.obtindreTots();
+        escaladorHeader();
+        for(Escalador e : escaladors){
+            System.out.println(e);
+        }
+
+        //Demanar escaladors especifiques per ID
+        System.out.println("ID de l'escalador: \n0 per sortir");
+        long id = Long.parseLong(sc.nextLine());
+        if(id == 0){
+            return;
+        }
+
+        //Buscar Escalador per ID
+        Escalador escalador = escaladorDAO.obtenir(id);
+
+        //Comprovacio de l'existencia de l'Escalador
+        if(escalador == null){
+            System.out.println("Escalador no trobat");
+            return;
+        }
+
+        //Demanar canvis
+
+        //Nom
+        System.out.println("Nom (" + escalador.getNom() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String nom = sc.nextLine();
+
+        if(!nom.isBlank()){
+            escalador.setNom(nom);
+        }
+
+        //Alias
+        System.out.println("Alias (" + escalador.getAlias() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String alias = sc.nextLine();
+
+        if(!alias.isBlank()){
+            escalador.setAlias(alias);
+        }
+
+        //Edat
+        System.out.println("Edat (" + escalador.getEdat() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String edat_string = sc.nextLine();
+
+        if(!edat_string.isBlank()){
+            try{
+                int edat = Integer.parseInt(edat_string);
+                escalador.setEdat(edat);
+            } catch (NumberFormatException e){
+                System.out.println("Has d'introduir un número.");
+            }
+        }
+
+        //Nivell_maxim
+        System.out.println("Nivell_maxim (" + escalador.getNivell_maxim() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String nivell_maxim = sc.nextLine();
+
+        if(!nivell_maxim.isBlank()){
+            escalador.setNivell_maxim(nivell_maxim);
+        }
+
+        //Estil_Preferit
+        System.out.println("Estil_preferit (" + escalador.getEstil_preferit() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String estil_preferit = sc.nextLine();
+
+        if(!estil_preferit.isBlank()){
+            escalador.setEstil_preferit(estil_preferit);
+        }
+
+        escaladorDAO.modificar(escalador);
+        System.out.println("Escalador modificat correctament");
     }
 
     private static void viaHeader() {
