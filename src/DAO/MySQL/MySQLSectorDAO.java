@@ -19,7 +19,22 @@ public class MySQLSectorDAO implements SectorDAO {
 
     @Override
     public void modificar(Sector c) {
+        String sql = "UPDATE sector SET nom=?, coordenades=?, aproximacio=?, numero_vies=?, popularitat=?, restriccions=? WHERE id_sector=?";
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+            PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            ps.setString(1, c.getNom());
+            ps.setString(2, c.getCoordenades());
+            ps.setString(3, c.getAproximacio());
+            ps.setInt(4, c.getNumero_vies());
+            ps.setString(5, c.getPopularitat());
+            ps.setString(6, c.getRestriccions());
+            ps.setLong(7, c.getId_sector());
+
+            ps.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -61,6 +76,34 @@ public class MySQLSectorDAO implements SectorDAO {
 
     @Override
     public Sector obtenir(Long id) {
+        String sql = "SELECT * from sector WHERE id_sector = ?";
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+
+                Sector s = new Sector();
+
+                s.setId_sector(rs.getLong("id_sector"));
+                s.setNom(rs.getString("nom"));
+                s.setCoordenades(rs.getString("coordenades"));
+                s.setAproximacio(rs.getString("aproximacio"));
+                s.setNumero_vies(rs.getInt("numero_vies"));
+                s.setPopularitat(rs.getString("popularitat"));
+                s.setRestriccions(rs.getString("restriccions"));
+                s.setEscola_id(rs.getLong("escola_id"));
+
+                return s;
+
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

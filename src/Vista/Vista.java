@@ -639,13 +639,15 @@ public class Vista {
 
         //Numero_Vies
         System.out.println("Numero_vies (" + sector.getNumero_vies() + ") pressiona 'Enter' si no vols modificar-lo: ");
-        int numero_vies = sc.nextInt();
-        sc.nextLine();
-
-        String numero_viesString = numero_vies+"";
+        String numero_viesString = sc.nextLine();
 
         if(!numero_viesString.isBlank()){
-            sector.setNumero_vies(numero_vies);
+            try{
+                int numero_vies = Integer.parseInt(numero_viesString);
+                sector.setNumero_vies(numero_vies);
+            } catch(NumberFormatException e){
+                System.out.println("Has d'introduir un número.");
+            }
         }
 
         //Popularitat
