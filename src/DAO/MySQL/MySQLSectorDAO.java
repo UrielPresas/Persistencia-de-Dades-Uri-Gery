@@ -76,7 +76,7 @@ public class MySQLSectorDAO implements SectorDAO {
 
     @Override
     public Sector obtenir(Long id) {
-        String sql = "SELECT * from sector WHERE id_sector = ?";
+        String sql = "SELECT * FROM sector WHERE id_sector = ?";
         try (Connection conn = ConexioFactory.getConnection("mysql");
         PreparedStatement ps = conn.prepareStatement(sql)) {
 

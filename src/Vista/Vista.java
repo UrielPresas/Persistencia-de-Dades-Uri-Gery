@@ -124,7 +124,7 @@ public class Vista {
                     System.out.println("Crear Escola...");
                     break;
                 case 2:
-                    System.out.println("Modificar Escola...");
+                    modificarEscola();
                     break;
                 case 3:
                     llistarEscoles();
@@ -668,6 +668,92 @@ public class Vista {
 
         sectorDAO.modificar(sector);
         System.out.println("Sector modificat correctament");
+    }
+
+    private static void modificarEscola(){
+        Scanner sc = new Scanner(System.in);
+
+        //Mostrar totes les escoles
+        EscolaDAO escolaDAO = new MySQLEscolaDAO();
+        List<Escola> escoles = escolaDAO.obtindreTots();
+        escolaHeader();
+        for(Escola e : escoles){
+            System.out.println(e);
+        }
+
+        //Demanar escoles especifiques per ID
+        System.out.println("ID de l'escola: \n0 per sortir");
+        long id = Long.parseLong(sc.nextLine());
+        if(id == 0){
+            return;
+        }
+
+        //Buscar Escola per ID
+        Escola escola = escolaDAO.obtenir(id);
+
+        //Comprovacio de l'existencia de l'Escola
+        if(escola == null){
+            System.out.println("Escola no trobada");
+            return;
+        }
+
+        //Demanar canvis
+
+        //Nom
+        System.out.println("Nom (" + escola.getNom() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String nom = sc.nextLine();
+
+        if(!nom.isBlank()){
+            escola.setNom(nom);
+        }
+
+        //Lloc
+        System.out.println("Lloc (" + escola.getLloc() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String lloc = sc.nextLine();
+
+        if(!lloc.isBlank()){
+            escola.setLloc(lloc);
+        }
+
+        //Aproximacio
+        System.out.println("Aproximacio (" + escola.getAproximacio() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String aproximacio = sc.nextLine();
+
+        if(!aproximacio.isBlank()){
+            escola.setAproximacio(aproximacio);
+        }
+
+        //Numero_Vies
+        System.out.println("Numero_vies (" + escola.getNumero_vies() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String numero_viesString = sc.nextLine();
+
+        if(!numero_viesString.isBlank()){
+            try{
+                int numero_vies = Integer.parseInt(numero_viesString);
+                escola.setNumero_vies(numero_vies);
+            } catch (NumberFormatException e){
+                System.out.println("Has d'introduir un número.");
+            }
+        }
+
+        //Popularitat
+        System.out.println("Popularitat (" + escola.getPopularitat() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String popularitat = sc.nextLine();
+
+        if(!popularitat.isBlank()){
+            escola.setPopularitat(popularitat);
+        }
+
+        //Restriccions
+        System.out.println("Restriccions (" + escola.getRestriccions() + ") pressiona 'Enter' si no vols modificar-lo: ");
+        String restriccions = sc.nextLine();
+
+        if(!restriccions.isBlank()){
+            escola.setRestriccions(restriccions);
+        }
+
+        escolaDAO.modificar(escola);
+        System.out.println("Escola modificada correctament");
     }
 
     private static void viaHeader() {

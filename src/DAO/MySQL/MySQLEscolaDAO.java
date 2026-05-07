@@ -23,7 +23,22 @@ public class MySQLEscolaDAO implements EscolaDAO {
 
     @Override
     public void modificar(Escola c) {
+        String sql = "UPDATE escola SET nom=?, lloc=?, aproximacio=?, numero_vies=?, popularitat=?, restriccions=? WHERE id_escola=?";
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+            PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            ps.setString(1, c.getNom());
+            ps.setString(2, c.getLloc());
+            ps.setString(3, c.getAproximacio());
+            ps.setInt(4, c.getNumero_vies());
+            ps.setString(5, c.getPopularitat());
+            ps.setString(6, c.getRestriccions());
+            ps.setLong(7, c.getId_escola());
+
+            ps.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -33,7 +48,6 @@ public class MySQLEscolaDAO implements EscolaDAO {
 
     @Override
     public List<Escola> obtindreTots() {
-
         List<Escola> escoles = new ArrayList<>();
 
         String sql = "SELECT * FROM escola";
@@ -65,6 +79,31 @@ public class MySQLEscolaDAO implements EscolaDAO {
 
     @Override
     public Escola obtenir(Long id) {
+        String sql = "SELECT * FROM escola WHERE id_escola = ?";
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+
+                Escola e = new Escola();
+
+                e.setId_escola(rs.getLong("id_escola"));
+                e.setNom(rs.getString("nom"));
+                e.setLloc(rs.getString("lloc"));
+                e.setAproximacio(rs.getString("aproximacio"));
+                e.setNumero_vies(rs.getInt("numero_vies"));
+                e.setPopularitat(rs.getString("popularitat"));
+                e.setRestriccions(rs.getString("restriccions"));
+
+                return e;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
         return null;
     }
 }
