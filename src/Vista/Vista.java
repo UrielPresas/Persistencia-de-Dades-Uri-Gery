@@ -161,7 +161,7 @@ public class Vista {
 
             switch (opcion){
                 case 1:
-                    System.out.println("Crear Sector...");
+                    inserirSector();
                     break;
                 case 2:
                     modificarSector();
@@ -498,34 +498,63 @@ public class Vista {
         Via via = new Via();
         ViaDAO viaDAO = new MySQLViaDAO();
 
+        //Demanar valors per inserir als camps
+
+        //Sector_id
         System.out.println("Introdueix el sector_id");
         long sector_id = Long.parseLong(sc.nextLine());
-        if(sector_id == 0) return;
+
+        if(sector_id == 0) {
+            return;
+        }
+
         via.setSector_id(sector_id);
 
+        //Creador_id
         System.out.println("Introdueix el creador_id");
         long creador_id = Long.parseLong(sc.nextLine());
-        if(creador_id == 0) return;
+
+        if(creador_id == 0) {
+            return;
+        }
+
         via.setCreador_id(creador_id);
 
+        //Nom
         System.out.println("Introdueix el nom");
         String nom = sc.nextLine();
-        if(!nom.isBlank()) via.setNom(nom);
 
+        if(!nom.isBlank()) {
+            via.setNom(nom);
+        }
+
+        //Tipus_via
         System.out.println("Introdueix el tipus_via");
         String tipus_via = sc.nextLine();
-        if(!tipus_via.isBlank()) via.setTipus_via(tipus_via);
 
+        if(!tipus_via.isBlank()) {
+            via.setTipus_via(tipus_via);
+        }
+
+        //Orientació
         System.out.println("Introdueix l'orientacio");
         String orientacio = sc.nextLine();
-        if(!orientacio.isBlank()) via.setOrientacio(orientacio);
 
+        if(!orientacio.isBlank()) {
+            via.setOrientacio(orientacio);
+        }
+
+        //Estat
         System.out.println("Introdueix l'estat");
         String estat = sc.nextLine();
-        if(!estat.isBlank()) via.setEstat(estat);
+
+        if(!estat.isBlank()) {
+            via.setEstat(estat);
+        }
 
         via.aplicarReglesEstat();
 
+        //Restriccions
         if(via.isRestriccions()){
             System.out.println("Introdueix Data_Fi_Estat (YYYY-MM-DD)");
             String data = sc.nextLine();
@@ -535,21 +564,108 @@ public class Vista {
             }
         }
 
+        //Ancoratge
         System.out.println("Introdueix l'ancoratge");
         String ancoratge = sc.nextLine();
-        if(!ancoratge.isBlank()) via.setAncoratge(ancoratge);
 
+        if(!ancoratge.isBlank()) {
+            via.setAncoratge(ancoratge);
+        }
+
+        //Tipus_roca
         System.out.println("Introdueix tipus_roca");
         String tipus_roca = sc.nextLine();
-        if(!tipus_roca.isBlank()) via.setTipus_roca(tipus_roca);
 
+        if(!tipus_roca.isBlank()) {
+            via.setTipus_roca(tipus_roca);
+        }
+
+        //Grau
         System.out.println("Introdueix el grau");
         String grau = sc.nextLine();
-        if(!grau.isBlank()) via.setGrau(grau);
 
+        if(!grau.isBlank()) {
+            via.setGrau(grau);
+        }
+
+        //Inserir la nova Via
         viaDAO.inserir(via);
-
         System.out.println("Via inserida correctament");
+    }
+
+    private static void inserirSector() {
+        Scanner sc = new Scanner(System.in);
+
+        Sector sector = new Sector();
+        SectorDAO sectorDAO = new MySQLSectorDAO();
+
+        //Demanar valors per inserir als camps
+
+        //Nom
+        System.out.println("Introdueix nom");
+        String nom = sc.nextLine();
+
+        if(!nom.isBlank()){
+            sector.setNom(nom);
+        }
+
+        //Coordenades
+        System.out.println("Introdueix coordenades");
+        String coordenades = sc.nextLine();
+
+        if(!coordenades.isBlank()){
+            sector.setCoordenades(coordenades);
+        }
+
+        //Aproximacio
+        System.out.println("Introdueix l'aproximacio");
+        String aproximacio = sc.nextLine();
+
+        if(!aproximacio.isBlank()){
+            sector.setAproximacio(aproximacio);
+        }
+
+        //Numero_Vies
+        System.out.println("Introdueix el numero_vies");
+        String numero_viesString = sc.nextLine();
+
+        if(!numero_viesString.isBlank()){
+            try{
+                int numero_vies = Integer.parseInt(numero_viesString);
+                sector.setNumero_vies(numero_vies);
+            } catch(NumberFormatException e){
+                System.out.println("Has d'introduir un número.");
+            }
+        }
+
+        //Popularitat
+        System.out.println("Introdueix la popularitat");
+        String popularitat = sc.nextLine();
+
+        if(!popularitat.isBlank()){
+            sector.setPopularitat(popularitat);
+        }
+
+        //Restriccions
+        System.out.println("Introdueix les restriccions");
+        String restriccions = sc.nextLine();
+
+        if(!restriccions.isBlank()){
+            sector.setRestriccions(restriccions);
+        }
+
+        //Escola_id
+        System.out.println("Introdueix escola_id");
+        long escola_id = sc.nextLong();
+
+        if(escola_id == 0){
+            return;
+        }
+
+        sector.setEscola_id(escola_id);
+
+        sectorDAO.inserir(sector);
+        System.out.println("Sector inserit corectament");
     }
 
     private static void modificarVia(){

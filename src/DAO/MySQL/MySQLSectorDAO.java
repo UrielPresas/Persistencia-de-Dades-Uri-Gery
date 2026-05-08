@@ -14,7 +14,22 @@ import java.util.List;
 public class MySQLSectorDAO implements SectorDAO {
     @Override
     public void inserir(Sector c) {
+        String sql = "INSERT INTO sector (nom, coordenades, aproximacio, numero_vies, popularitat, restriccions, escola_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+        PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            ps.setString(1, c.getNom());
+            ps.setString(2, c.getCoordenades());
+            ps.setString(3, c.getAproximacio());
+            ps.setInt(4, c.getNumero_vies());
+            ps.setString(5, c.getPopularitat());
+            ps.setString(6, c.getRestriccions());
+            ps.setLong(7, c.getEscola_id());;
+
+            ps.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
