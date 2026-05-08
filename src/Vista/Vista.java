@@ -84,7 +84,7 @@ public class Vista {
 
             switch (opcion){
                 case 1:
-                    System.out.println("Crear Via...");
+                    inserirVia();
                     break;
                 case 2:
                     modificarVia();
@@ -490,6 +490,66 @@ public class Vista {
             }
 
         } while (opcion != 0);
+    }
+
+    private static void inserirVia() {
+        Scanner sc = new Scanner(System.in);
+
+        Via via = new Via();
+        ViaDAO viaDAO = new MySQLViaDAO();
+
+        System.out.println("Introdueix el sector_id");
+        long sector_id = Long.parseLong(sc.nextLine());
+        if(sector_id == 0) return;
+        via.setSector_id(sector_id);
+
+        System.out.println("Introdueix el creador_id");
+        long creador_id = Long.parseLong(sc.nextLine());
+        if(creador_id == 0) return;
+        via.setCreador_id(creador_id);
+
+        System.out.println("Introdueix el nom");
+        String nom = sc.nextLine();
+        if(!nom.isBlank()) via.setNom(nom);
+
+        System.out.println("Introdueix el tipus_via");
+        String tipus_via = sc.nextLine();
+        if(!tipus_via.isBlank()) via.setTipus_via(tipus_via);
+
+        System.out.println("Introdueix l'orientacio");
+        String orientacio = sc.nextLine();
+        if(!orientacio.isBlank()) via.setOrientacio(orientacio);
+
+        System.out.println("Introdueix l'estat");
+        String estat = sc.nextLine();
+        if(!estat.isBlank()) via.setEstat(estat);
+
+        via.aplicarReglesEstat();
+
+        if(via.isRestriccions()){
+            System.out.println("Introdueix Data_Fi_Estat (YYYY-MM-DD)");
+            String data = sc.nextLine();
+
+            if(!data.isBlank()){
+                via.setData_fi_estat(LocalDate.parse(data));
+            }
+        }
+
+        System.out.println("Introdueix l'ancoratge");
+        String ancoratge = sc.nextLine();
+        if(!ancoratge.isBlank()) via.setAncoratge(ancoratge);
+
+        System.out.println("Introdueix tipus_roca");
+        String tipus_roca = sc.nextLine();
+        if(!tipus_roca.isBlank()) via.setTipus_roca(tipus_roca);
+
+        System.out.println("Introdueix el grau");
+        String grau = sc.nextLine();
+        if(!grau.isBlank()) via.setGrau(grau);
+
+        viaDAO.inserir(via);
+
+        System.out.println("Via inserida correctament");
     }
 
     private static void modificarVia(){

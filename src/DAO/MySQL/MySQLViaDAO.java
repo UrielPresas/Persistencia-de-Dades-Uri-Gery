@@ -16,7 +16,34 @@ import java.util.List;
 public class MySQLViaDAO implements ViaDAO {
     @Override
     public void inserir(Via c) {
+        String sql = "INSERT INTO via (sector_id, creador_id, nom, tipus_via, orientacio, estat, data_fi_estat, ancoratge, tipus_roca, grau, restriccions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+        PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            ps.setLong(1, c.getSector_id());
+            ps.setLong(2, c.getCreador_id());
+            ps.setString(3, c.getNom());
+            ps.setString(4, c.getTipus_via());
+            ps.setString(5, c.getOrientacio());
+            ps.setString(6, c.getEstat());
+            if(c.getData_fi_estat() != null){
+                ps.setDate(7, java.sql.Date.valueOf(c.getData_fi_estat()));
+            } else{
+                ps.setNull(7, Types.DATE);
+            }
+
+            ps.setString(8, c.getAncoratge());
+            ps.setString(9, c.getTipus_roca());
+            ps.setString(10, c.getGrau());
+            ps.setBoolean(11, c.isRestriccions());
+
+            ps.executeUpdate();
+
+            System.out.println("Via inserida correctament.");
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
