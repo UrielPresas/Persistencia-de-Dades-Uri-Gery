@@ -1,9 +1,7 @@
 package DAO.MySQL;
 
 import DAO.ViaDAO;
-import Model.DTO.ViaDifDTO;
-import Model.DTO.ViaEstatDTO;
-import Model.DTO.ViaTancadaDTO;
+import Model.DTO.*;
 import Model.Via;
 import DAO.Connexions.ConexioFactory;
 
@@ -288,6 +286,93 @@ public class MySQLViaDAO implements ViaDAO {
                         rs.getString("nom_via"),
                         rs.getString("grau"),
                         rs.getString("tipus_via"),
+                        rs.getString("nom_sector"),
+                        rs.getString("nom_escola")
+                );
+
+                vies.add(v);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return vies;
+    }
+
+    public List<ViaApteDTO> obtindreViesApteRecents() {
+
+        List<ViaApteDTO> vies = new ArrayList<>();
+
+        String sql = """
+        SELECT v.nom AS nom_via,
+               s.nom AS nom_sector,
+               e.nom AS nom_escola,
+               v.data_fi_estat
+        FROM via v
+        JOIN sector s ON v.sector_id = s.id_sector
+        JOIN escola e ON s.escola_id = e.id_escola
+        WHERE LOWER(v.estat) = 'apte'
+          AND v.data_fi_estat IS NOT NULL
+          AND v.data_fi_estat BETWEEN DATE_SUB(CURDATE(), INTERVAL 14 DAY)
+                                  AND CURDATE()
+    """;
+
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Date data = rs.getDate("data_fi_estat");
+
+                ViaApteDTO v = new ViaApteDTO(
+                        rs.getString("nom_via"),
+                        rs.getString("nom_sector"),
+                        rs.getString("nom_escola"),
+                        data != null ? data.toLocalDate() : null
+                );
+
+                vies.add(v);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return vies;
+    }
+
+    public List<ViaLlargaDTO> obtindreViesMesLlarguesPerEscola(long idEscola) {
+
+        List<ViaLlargaDTO> vies = new ArrayList<>();
+
+        String sql = """
+        SELECT v.nom AS nom_via,
+               l.llargada_total AS llargada,
+               s.nom AS nom_sector,
+               e.nom AS nom_escola
+        FROM via v
+        JOIN llarg l ON v.id_via = l.via_id
+        JOIN sector s ON v.sector_id = s.id_sector
+        JOIN escola e ON s.escola_id = e.id_escola
+        WHERE e.id_escola = ?
+        ORDER BY l.llargada_total DESC
+    """;
+
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, idEscola);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                ViaLlargaDTO v = new ViaLlargaDTO(
+                        rs.getString("nom_via"),
+                        rs.getInt("llargada"),
                         rs.getString("nom_sector"),
                         rs.getString("nom_escola")
                 );

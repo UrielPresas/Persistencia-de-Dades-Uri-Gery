@@ -8,10 +8,7 @@ import DAO.MySQL.MySQLSectorDAO;
 import DAO.MySQL.MySQLViaDAO;
 import DAO.SectorDAO;
 import DAO.ViaDAO;
-import Model.DTO.EscolaRestriccioDTO;
-import Model.DTO.ViaDifDTO;
-import Model.DTO.ViaEstatDTO;
-import Model.DTO.ViaTancadaDTO;
+import Model.DTO.*;
 import Model.Escalador;
 import Model.Escola;
 import Model.Sector;
@@ -455,7 +452,7 @@ public class Vista {
 
             switch (opcion){
                 case 1:
-                    System.out.println("Mostrant sectors amb moltes vies...");
+                    mostrarSectorsAmbMesDeXVies();
                     break;
                 case 0:
                     break;
@@ -1226,5 +1223,170 @@ public class Vista {
                 "SECTOR",
                 "ESCOLA"
         );    }
+    private static void EscaladorMateixNivell(){
+
+        System.out.printf(
+                "%-20s %-20s %-15s\n",
+                "NOM",
+                "ALIAS",
+                "NIVELL_MAXIM"
+        );
+    }
+
+    private static void ViaApteFaPoc(){
+        System.out.printf(
+                "%-20s %-20s %-20s %-15s\n",
+                "VIA",
+                "SECTOR",
+                "ESCOLA",
+                "DATA_APTE"
+        );
+    }
+
+    private static void ViaLlargada() {
+        System.out.printf(
+                "%-25s %-15s %-20s %-20s\n",
+                "VIA",
+                "LLARGADA",
+                "SECTOR",
+                "ESCOLA"
+        );
+    }
+
+    private static void mostrarSectorsAmbMesDeXVies() {
+
+        Scanner sc = new Scanner(System.in);
+
+        MySQLSectorDAO sectorDAO = new MySQLSectorDAO();
+
+        System.out.print("Introdueix el mínim de vies: ");
+        int minim = sc.nextInt();
+
+        List<SectorViesDTO> sectors =
+                sectorDAO.obtindreSectorsAmbMesDeXVies(minim);
+
+        System.out.println("\n--- SECTORS AMB MÉS DE " + minim + " VIES ---\n");
+
+        System.out.printf(
+                "%-25s %-15s %-20s\n",
+                "SECTOR",
+                "TOTAL_VIES",
+                "ESCOLA"
+        );
+
+        if (sectors.isEmpty()) {
+            System.out.println("No s'han trobat sectors.");
+        } else {
+            sectors.forEach(System.out::println);
+        }
+    }
+
+
+    private static void mostrarEscaladorsMateixNivell() {
+
+        Scanner sc = new Scanner(System.in);
+
+        MySQLEscaladorDAO escaladorDAO = new MySQLEscaladorDAO();
+
+        System.out.print("Introdueix el nivell a buscar: ");
+        String nivell = sc.nextLine();
+
+        List<EscaladorNivellDTO> escaladors =
+                escaladorDAO.obtindreEscaladorsPerNivell(nivell);
+
+        System.out.println("\n--- ESCALADORS AMB NIVELL " + nivell + " ---\n");
+
+
+
+        if (escaladors.size() >= 2) {
+            EscaladorMateixNivell();
+            escaladors.forEach(System.out::println);
+
+        } else {
+
+            System.out.println(
+                    "No hi ha 2 escaladors o més amb el nivell " + nivell
+            );
+        }
+    }
+
+
+    private static void mostrarViesApteRecents() {
+
+        MySQLViaDAO viaDAO = new MySQLViaDAO();
+
+        List<ViaApteDTO> vies =
+                viaDAO.obtindreViesApteRecents();
+
+        System.out.println(
+                "\n--- VIES QUE HAN PASSAT A APTE EN ELS ÚLTIMS 14 DIES ---\n"
+        );
+
+
+
+        if (vies.isEmpty()) {
+            ViaApteFaPoc();
+            System.out.println("No hi ha vies recents.");
+
+        } else {
+
+            vies.forEach(System.out::println);
+        }
+    }
+
+
+    private static void mostrarViesMesLlarguesPerEscola() {
+
+        Scanner sc = new Scanner(System.in);
+
+        MySQLEscolaDAO escolaDAO = new MySQLEscolaDAO();
+        MySQLViaDAO viaDAO = new MySQLViaDAO();
+
+        List<Escola> escoles = escolaDAO.obtindreTots();
+
+        System.out.println("\n--- ESCOLES DISPONIBLES ---\n");
+
+        for (int i = 0; i < escoles.size(); i++) {
+
+            System.out.println(
+                    (i + 1) + ". " + escoles.get(i).getNom()
+            );
+        }
+
+        System.out.print("\nSelecciona una escola: ");
+        int opcio = sc.nextInt();
+
+        if (opcio < 1 || opcio > escoles.size()) {
+
+            System.out.println("Opció no vàlida.");
+            return;
+        }
+
+        Escola escolaSeleccionada = escoles.get(opcio - 1);
+
+        List<ViaLlargaDTO> vies =
+                viaDAO.obtindreViesMesLlarguesPerEscola(
+                        escolaSeleccionada.getId_escola()
+                );
+
+        System.out.println(
+                "\n--- VIES MÉS LLARGUES DE "
+                        + escolaSeleccionada.getNom().toUpperCase()
+                        + " ---\n"
+        );
+
+
+
+        if (vies.isEmpty()) {
+
+            System.out.println("No hi ha vies.");
+
+        } else {
+            ViaLlargada();
+            vies.forEach(System.out::println);
+        }
+    }
+
+
 
 }

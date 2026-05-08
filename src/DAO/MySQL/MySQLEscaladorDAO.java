@@ -2,6 +2,7 @@ package DAO.MySQL;
 
 import DAO.Connexions.ConexioFactory;
 import DAO.EscaladorDAO;
+import Model.DTO.EscaladorNivellDTO;
 import Model.Escalador;
 import Model.Via;
 import com.mysql.cj.jdbc.ConnectionImpl;
@@ -106,5 +107,42 @@ public class MySQLEscaladorDAO implements EscaladorDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<EscaladorNivellDTO> obtindreEscaladorsPerNivell(String nivell) {
+
+        List<EscaladorNivellDTO> escaladors = new ArrayList<>();
+
+        String sql = """
+        SELECT nom,
+               alias,
+               nivell_maxim
+        FROM escalador
+        WHERE nivell_maxim = ?
+    """;
+
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, nivell);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                EscaladorNivellDTO e = new EscaladorNivellDTO(
+                        rs.getString("nom"),
+                        rs.getString("alias"),
+                        rs.getString("nivell_maxim")
+                );
+
+                escaladors.add(e);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return escaladors;
     }
 }

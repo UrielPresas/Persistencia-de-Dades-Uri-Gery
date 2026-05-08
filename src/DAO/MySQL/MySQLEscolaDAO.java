@@ -4,6 +4,7 @@ package DAO.MySQL;
 
 import DAO.Connexions.ConexioFactory;
 import DAO.EscolaDAO;
+import Model.DTO.EscaladorNivellDTO;
 import Model.DTO.EscolaRestriccioDTO;
 import Model.Escola;
 import Model.Sector;
@@ -141,4 +142,5 @@ public class MySQLEscolaDAO implements EscolaDAO {
 
         return escoles;
     }
+
 }
