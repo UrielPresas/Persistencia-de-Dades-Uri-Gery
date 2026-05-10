@@ -1212,11 +1212,81 @@ public class Vista {
     }
 
     private static void eliminarEscola(){
+        Scanner sc = new Scanner(System.in);
 
+        EscolaDAO escolaDAO = new MySQLEscolaDAO();
+
+        //Mostrar tots els sectors
+        List<Escola> escoles = escolaDAO.obtindreTots();
+        escolaHeader();
+
+        for(Escola e : escoles){
+            System.out.println(e);
+        }
+
+        // Demanar ID
+        System.out.println("Introdueix ID de l'escola a eliminar (0 per sortir):");
+        long id = Long.parseLong(sc.nextLine());
+
+        if(id == 0){
+            return;
+        }
+
+        Escola escola = escolaDAO.obtenir(id);
+
+        if(escola == null){
+            System.out.println("Escola no trobada");
+            return;
+        }
+
+        // Confirmació
+        System.out.println("Segur que vols eliminar l'escola " + escola.getNom() + "? (s/n)");
+        String confirmacio = sc.nextLine();
+
+        if(confirmacio.equalsIgnoreCase("s")){
+            escolaDAO.eliminar(escola);
+        } else {
+            System.out.println("Eliminació cancel·lada");
+        }
     }
 
     private static void eliminarEscalador(){
+        Scanner sc = new Scanner(System.in);
 
+        EscaladorDAO escaladorDAO = new MySQLEscaladorDAO();
+
+        //Mostrar tots els escaladors
+        List<Escalador> escaladors = escaladorDAO.obtindreTots();
+        escaladorHeader();
+
+        for(Escalador e : escaladors){
+            System.out.println(e);
+        }
+
+        // Demanar ID
+        System.out.println("Introdueix ID del escalador a eliminar (0 per sortir):");
+        long id = Long.parseLong(sc.nextLine());
+
+        if(id == 0){
+            return;
+        }
+
+        Escalador escalador = escaladorDAO.obtenir(id);
+
+        if(escalador == null){
+            System.out.println("Escalador no trobat");
+            return;
+        }
+
+        // Confirmació
+        System.out.println("Segur que vols eliminar la via " + escalador.getNom() + "? (s/n)");
+        String confirmacio = sc.nextLine();
+
+        if(confirmacio.equalsIgnoreCase("s")){
+            escaladorDAO.eliminar(escalador);
+        } else {
+            System.out.println("Eliminació cancel·lada");
+        }
     }
 
     private static void viaHeader() {

@@ -59,7 +59,24 @@ public class MySQLEscolaDAO implements EscolaDAO {
 
     @Override
     public void eliminar(Escola c) {
+        String sql = "DELETE FROM escola WHERE id_escola = ?";
 
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, c.getId_escola());
+
+            int files = ps.executeUpdate();
+
+            if(files > 0){
+                System.out.println("Escola eliminada correctament");
+            } else {
+                System.out.println("No s'ha trobat l'escola");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -55,7 +55,24 @@ public class MySQLEscaladorDAO implements EscaladorDAO {
 
     @Override
     public void eliminar(Escalador c) {
+        String sql = "DELETE FROM escalador WHERE id_escalador = ?";
 
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, c.getId_escalador());
+
+            int files = ps.executeUpdate();
+
+            if(files > 0){
+                System.out.println("Escalador eliminat correctament");
+            } else {
+                System.out.println("No s'ha trobat l'escalador");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
