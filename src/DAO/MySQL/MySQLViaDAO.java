@@ -75,7 +75,24 @@ public class MySQLViaDAO implements ViaDAO {
 
     @Override
     public void eliminar(Via c) {
+        String sql = "DELETE FROM via WHERE id_via = ?";
 
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, c.getId_via());
+
+            int files = ps.executeUpdate();
+
+            if(files > 0){
+                System.out.println("Via eliminada correctament");
+            } else {
+                System.out.println("No s'ha trobat la via");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

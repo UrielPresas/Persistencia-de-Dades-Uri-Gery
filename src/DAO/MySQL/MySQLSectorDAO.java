@@ -55,7 +55,24 @@ public class MySQLSectorDAO implements SectorDAO {
 
     @Override
     public void eliminar(Sector c) {
+        String sql = "DELETE FROM sector WHERE id_sector = ?";
 
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, c.getId_sector());
+
+            int files = ps.executeUpdate();
+
+            if(files > 0){
+                System.out.println("Sector eliminat correctament");
+            } else {
+                System.out.println("No s'ha trobat el sector");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

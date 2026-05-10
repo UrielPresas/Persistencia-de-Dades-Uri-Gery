@@ -91,7 +91,7 @@ public class Vista {
                     llistarVies();
                     break;
                 case 4:
-                    System.out.println("Eliminar Via...");
+                    eliminarVia();
                     break;
                 case 0:
                     System.out.println("Tornant al menú principal...");
@@ -130,7 +130,7 @@ public class Vista {
                     llistarEscoles();
                     break;
                 case 4:
-                    System.out.println("Eliminar Escola...");
+                    eliminarEscola();
                     break;
                 case 0:
                     System.out.println("Tornant...");
@@ -168,7 +168,7 @@ public class Vista {
                     llistarSectors();
                     break;
                 case 4:
-                    System.out.println("Eliminar Sector...");
+                    eliminarSector();
                     break;
                 case 0:
                     System.out.println("Tornant...");
@@ -206,7 +206,7 @@ public class Vista {
                     llistarEscaladors();
                     break;
                 case 4:
-                    System.out.println("Eliminar Escalador...");
+                    eliminarEscalador();
                     break;
                 case 0:
                     System.out.println("Tornant...");
@@ -1131,6 +1131,92 @@ public class Vista {
 
         escaladorDAO.modificar(escalador);
         System.out.println("Escalador modificat correctament");
+    }
+
+    private static void eliminarVia(){
+        Scanner sc = new Scanner(System.in);
+
+        ViaDAO viaDAO = new MySQLViaDAO();
+
+        // Mostrar totes
+        List<Via> vies = viaDAO.obtindreTots();
+        viaHeader();
+
+        for(Via v : vies){
+            System.out.println(v);
+        }
+
+        // Demanar ID
+        System.out.println("Introdueix ID de la via a eliminar (0 per sortir):");
+        long id = Long.parseLong(sc.nextLine());
+
+        if(id == 0){
+            return;
+        }
+
+        Via via = viaDAO.obtenir(id);
+
+        if(via == null){
+            System.out.println("Via no trobada");
+            return;
+        }
+
+        // Confirmació
+        System.out.println("Segur que vols eliminar la via " + via.getNom() + "? (s/n)");
+        String confirmacio = sc.nextLine();
+
+        if(confirmacio.equalsIgnoreCase("s")){
+            viaDAO.eliminar(via);
+        } else {
+            System.out.println("Eliminació cancel·lada");
+        }
+    }
+
+    private static void eliminarSector(){
+        Scanner sc = new Scanner(System.in);
+
+        SectorDAO sectorDAO = new MySQLSectorDAO();
+
+        //Mostrar tots els sectors
+        List<Sector> sectors = sectorDAO.obtindreTots();
+        sectorHeader();
+
+        for(Sector s : sectors){
+            System.out.println(s);
+        }
+
+        // Demanar ID
+        System.out.println("Introdueix ID del sector a eliminar (0 per sortir):");
+        long id = Long.parseLong(sc.nextLine());
+
+        if(id == 0){
+            return;
+        }
+
+        Sector sector = sectorDAO.obtenir(id);
+
+        if(sector == null){
+            System.out.println("Sector no trobat");
+            return;
+        }
+
+        // Confirmació
+        System.out.println("Segur que vols eliminar el sector " + sector.getNom() + "? (s/n)");
+        String confirmacio = sc.nextLine();
+
+        if(confirmacio.equalsIgnoreCase("s")){
+            sectorDAO.eliminar(sector);
+        } else {
+            System.out.println("Eliminació cancel·lada");
+        }
+    }
+
+    private static void eliminarEscola(){
+
+    }
+
+    private static void eliminarEscalador(){
+
     }
 
     private static void viaHeader() {

@@ -16,7 +16,6 @@ public class Main {
         if(conn != null){
             System.out.println("Connexió correcta");
             Vista.vistaMainMenu(conn);
-
         } else {
             System.out.println("Error en la connexió");
         }
