@@ -4,8 +4,6 @@ import DAO.Connexions.ConexioFactory;
 import DAO.EscaladorDAO;
 import Model.DTO.EscaladorNivellDTO;
 import Model.Escalador;
-import Model.Via;
-import com.mysql.cj.jdbc.ConnectionImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
