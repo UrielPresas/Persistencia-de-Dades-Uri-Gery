@@ -387,16 +387,16 @@ public class Vista {
 
             switch (opcion){
                 case 1:
-                    System.out.println("Filtrar per dificultat...");
+                    mostrarViesPerDificultat();
                     break;
                 case 2:
-                    System.out.println("Filtrar per estat...");
+                    mostrarViesPerEstat();
                     break;
                 case 3:
-                    System.out.println("Vies passades a Apte...");
+                    mostrarViesApteRecents();
                     break;
                 case 4:
-                    System.out.println("Vies més llargues...");
+                    mostrarViesMesLlarguesPerEscola();
                     break;
                 case 0:
                     break;
