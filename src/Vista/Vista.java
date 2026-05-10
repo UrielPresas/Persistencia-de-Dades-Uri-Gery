@@ -16,6 +16,7 @@ import Model.Via;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -120,7 +121,7 @@ public class Vista {
 
             switch (opcion){
                 case 1:
-                    System.out.println("Crear Escola...");
+                    inserirEscola();
                     break;
                 case 2:
                     modificarEscola();
@@ -196,7 +197,7 @@ public class Vista {
 
             switch (opcion){
                 case 1:
-                    System.out.println("Crear Escalador...");
+                    inserirEscalador();
                     break;
                 case 2:
                     modificarEscalador();
@@ -663,6 +664,121 @@ public class Vista {
 
         sectorDAO.inserir(sector);
         System.out.println("Sector inserit corectament");
+    }
+
+    private static void inserirEscalador(){
+        Scanner sc = new Scanner(System.in);
+
+        Escalador escalador = new Escalador();
+        EscaladorDAO escaladorDAO = new MySQLEscaladorDAO();
+
+        //Demanar valors per inserir als camps
+
+        //Nom
+        System.out.println("Introdueix nom");
+        String nom = sc.nextLine();
+
+        if(!nom.isBlank()){
+            escalador.setNom(nom);
+        }
+
+        System.out.println("Introdueix alias");
+        String alias = sc.nextLine();
+
+        if(!alias.isBlank()){
+            escalador.setAlias(alias);
+        }
+
+        System.out.println("Introdueix edat");
+        String edatString = sc.nextLine();
+
+        if(!edatString.isBlank()){
+            try{
+                int edat = Integer.parseInt(edatString);
+                escalador.setEdat(edat);
+            } catch(NumberFormatException e){
+                System.out.println("Has d'introduir un número.");
+            }
+        }
+
+        System.out.println("Introdueix nivell_maxim");
+        String nivell_maxim = sc.nextLine();
+
+        if(!nivell_maxim.isBlank()){
+            escalador.setNivell_maxim(nivell_maxim);
+        }
+
+        System.out.println("Introdueix estil_preferit");
+        String estil_preferit = sc.nextLine();
+
+        if(!estil_preferit.isBlank()){
+            escalador.setEstil_preferit(estil_preferit);
+        }
+
+        escaladorDAO.inserir(escalador);
+        System.out.println("Escalador inserit correctament");
+    }
+
+    private static void inserirEscola(){
+        Scanner sc = new Scanner(System.in);
+
+        Escola escola = new Escola();
+        EscolaDAO escolaDAO = new MySQLEscolaDAO();
+
+        //Demanar valors per inserir als camps
+
+        //Nom
+        System.out.println("Introdueix nom");
+        String nom = sc.nextLine();
+
+        if(!nom.isBlank()){
+            escola.setNom(nom);
+        }
+
+        System.out.println("Introdueix lloc");
+        String lloc = sc.nextLine();
+
+        if(!lloc.isBlank()){
+            escola.setLloc(lloc);
+        }
+
+        System.out.println("Introdueix l'aproximacio");
+        String aproximacio = sc.nextLine();
+
+        if(!aproximacio.isBlank()){
+            escola.setAproximacio(aproximacio);
+        }
+
+        //Numero_Vies
+        System.out.println("Introdueix el numero_vies");
+        String numero_viesString = sc.nextLine();
+
+        if(!numero_viesString.isBlank()){
+            try{
+                int numero_vies = Integer.parseInt(numero_viesString);
+                escola.setNumero_vies(numero_vies);
+            } catch(NumberFormatException e){
+                System.out.println("Has d'introduir un número.");
+            }
+        }
+
+        System.out.println("Introdueix la popularitat");
+        String popularitat = sc.nextLine();
+
+        if(!popularitat.isBlank()){
+            escola.setPopularitat(popularitat);
+        }
+
+        System.out.println("Introdueix les restriccions");
+        String restriccions = sc.nextLine();
+
+        if(!restriccions.isBlank()){
+            escola.setRestriccions(restriccions);
+        }
+
+        escolaDAO.inserir(escola);
+        System.out.println("Escola inserida correctament");
+
     }
 
     private static void modificarVia(){

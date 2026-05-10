@@ -20,7 +20,21 @@ public class MySQLEscolaDAO implements EscolaDAO {
 
     @Override
     public void inserir(Escola c) {
+        String sql = "INSERT INTO escola (nom, lloc, aproximacio, numero_vies, popularitat, restriccions) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            ps.setString(1, c.getNom());
+            ps.setString(2, c.getLloc());
+            ps.setString(3, c.getAproximacio());
+            ps.setInt(4, c.getNumero_vies());
+            ps.setString(5, c.getPopularitat());
+            ps.setString(6, c.getRestriccions());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

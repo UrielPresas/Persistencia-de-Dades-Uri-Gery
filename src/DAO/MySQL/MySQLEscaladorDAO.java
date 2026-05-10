@@ -18,7 +18,20 @@ public class MySQLEscaladorDAO implements EscaladorDAO {
 
     @Override
     public void inserir(Escalador c) {
+        String sql = "INSERT INTO escalador (nom, alias, edat, nivell_maxim, estil_preferit) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = ConexioFactory.getConnection("mysql");
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            ps.setString(1, c.getNom());
+            ps.setString(2, c.getAlias());
+            ps.setInt(3, c.getEdat());
+            ps.setString(4, c.getNivell_maxim());
+            ps.setString(5, c.getEstil_preferit());
+
+            ps.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
