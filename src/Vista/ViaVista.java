@@ -60,101 +60,120 @@ public class ViaVista {
 
     private static void inserirVia() {
         Scanner sc = new Scanner(System.in);
-
         Via via = new Via();
         ViaDAO viaDAO = new MySQLViaDAO();
 
-        //Demanar valors per inserir als camps
-
-        //Sector_id
-        System.out.println("Introdueix el sector_id");
+        // SECTOR
+        System.out.println("Introdueix el sector_id:");
         long sector_id = Long.parseLong(sc.nextLine());
-
-        if(sector_id == 0) {
-            return;
-        }
-
+        if (sector_id == 0) return;
         via.setSector_id(sector_id);
 
-        //Creador_id
-        System.out.println("Introdueix el creador_id");
+        // CREADOR
+        System.out.println("Introdueix el creador_id:");
         long creador_id = Long.parseLong(sc.nextLine());
-
-        if(creador_id == 0) {
-            return;
-        }
-
+        if (creador_id == 0) return;
         via.setCreador_id(creador_id);
 
-        //Nom
-        System.out.println("Introdueix el nom");
+        // NOM
+        System.out.println("Introdueix el nom:");
         String nom = sc.nextLine();
-
-        if(!nom.isBlank()) {
-            via.setNom(nom);
+        if (nom.isBlank()) {
+            System.out.println("Nom obligatori");
+            return;
         }
+        via.setNom(nom);
 
-        //Tipus_via
-        System.out.println("Introdueix el tipus_via");
-        String tipus_via = sc.nextLine();
+        // TIPUS VIA (CLAVE DEL FLUJO)
+        System.out.println("Tipus via (esportiva, classica, gel):");
+        String tipus_via = sc.nextLine().toLowerCase();
 
-        if(!tipus_via.isBlank()) {
-            via.setTipus_via(tipus_via);
+        if (tipus_via.isBlank()) {
+            System.out.println("Tipus via obligatori");
+            return;
         }
+        via.setTipus_via(tipus_via);
 
-        //Orientació
-        System.out.println("Introdueix l'orientacio");
+        // ORIENTACIÓ
+        System.out.println("Orientació (N,NE,NO,SE,SO,E,O,S):");
         String orientacio = sc.nextLine();
+        via.setOrientacio(orientacio);
 
-        if(!orientacio.isBlank()) {
-            via.setOrientacio(orientacio);
-        }
-
-        //Estat
-        System.out.println("Introdueix l'estat");
+        // ESTAT
+        System.out.println("Estat (apte, construccio, tancada):");
         String estat = sc.nextLine();
-
-        if(!estat.isBlank()) {
-            via.setEstat(estat);
-        }
+        via.setEstat(estat);
 
         via.aplicarReglesEstat();
 
-        //Restriccions
-        if(via.isRestriccions()){
-            System.out.println("Introdueix Data_Fi_Estat (YYYY-MM-DD)");
+        // DATA FI ESTAT si cal
+        if (via.isRestriccions()) {
+            System.out.println("Data fi estat (YYYY-MM-DD):");
             String data = sc.nextLine();
-
-            if(!data.isBlank()){
+            if (!data.isBlank()) {
                 via.setData_fi_estat(LocalDate.parse(data));
             }
         }
 
-        //Ancoratge
-        System.out.println("Introdueix l'ancoratge");
-        String ancoratge = sc.nextLine();
+        // ANCORATGE SEGONS TIPUS VIA
+        String ancoratge = "";
 
-        if(!ancoratge.isBlank()) {
-            via.setAncoratge(ancoratge);
+        switch (tipus_via) {
+
+            case "esportiva":
+                System.out.println("Ancoratge (spits, parabolts, químics):");
+                ancoratge = sc.nextLine();
+
+                if (!ancoratge.matches("spits|parabolts|químics")) {
+                    System.out.println("Ancorage no vàlid per via esportiva");
+                    return;
+                }
+                break;
+
+            case "classica":
+                System.out.println("Ancoratge (friends, tascons, bagues, pitons, Tricams, BigBros, spits, parabolts, químics):");
+                ancoratge = sc.nextLine();
+
+                if (!ancoratge.matches("friends|tascons|bagues|pitons|Tricams|BigBros|spits|parabolts|químics")) {
+                    System.out.println("Ancorage no vàlid per via clàssica");
+                    return;
+                }
+                break;
+
+            case "gel":
+                System.out.println("Ancoratge (friends, tascons, bagues, pitons, Tricams, BigBros, cargols gel):");
+                ancoratge = sc.nextLine();
+
+                if (!ancoratge.matches("friends|tascons|bagues|pitons|Tricams|BigBros|cargols gel")) {
+                    System.out.println("Ancorage no vàlid per via de gel");
+                    return;
+                }
+                break;
+
+            default:
+                System.out.println("Tipus de via no vàlid");
+                return;
         }
 
-        //Tipus_roca
-        System.out.println("Introdueix tipus_roca");
-        String tipus_roca = sc.nextLine();
+        via.setAncoratge(ancoratge);
 
-        if(!tipus_roca.isBlank()) {
-            via.setTipus_roca(tipus_roca);
+        // TIPUS ROCA
+        System.out.println("Tipus roca (conglomerat, granit, calcaria, arenisca, altres):");
+        String roca = sc.nextLine();
+
+        if (!roca.matches("conglomerat|granit|calcaria|arenisca|altres")) {
+            System.out.println("Tipus de roca no vàlid");
+            return;
         }
 
-        //Grau
-        System.out.println("Introdueix el grau");
+        via.setTipus_roca(roca);
+
+        // GRAU
+        System.out.println("Grau:");
         String grau = sc.nextLine();
+        via.setGrau(grau);
 
-        if(!grau.isBlank()) {
-            via.setGrau(grau);
-        }
-
-        //Inserir la nova Via
+        // INSERT
         viaDAO.inserir(via);
         System.out.println("Via inserida correctament");
     }
