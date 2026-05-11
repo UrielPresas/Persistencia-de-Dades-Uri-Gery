@@ -1,4 +1,4 @@
-# README Tècnic - Decisions de Disseny del Projecte Pillam
+# README Uriel - Gerard | Decisions de Disseny del Projecte
 
 ## Objectiu del projecte
 
